@@ -38,22 +38,20 @@ def drop_token(column, token):
           return True
     return False  
 
-
 player1 = 'Player 1'
 player2 = 'Player 2'
 player1Token = 'X'
 player2Token = 'O'
 
-
 currentPlayer = player1
 currentToken = player1Token
 
-print('Wonderful! Let\'s start the game! Here is the board')
-print_board()
+gameStatus = True
+
+print('Wonderful! Let\'s start the game!')
 
 #get input
 def get_player_input():
-  
   while True:
     colStr = input(f'{currentPlayer}, where would you like to place your token? (Col #)')
     if colStr.isdigit():
@@ -65,11 +63,11 @@ def get_player_input():
     else:
        print('Please enter a valid number between 1-7')
 
-column = get_player_input()
-drop_token(column, currentToken)
-print_board()
+while gameStatus:
+   column = get_player_input()
+   drop_token(column, currentToken)
+   print_board()
 
-#handle player input
 
   # #check if column input is valid (1-7)
   #   if(column >= 0 and column < columns):

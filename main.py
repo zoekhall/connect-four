@@ -20,17 +20,40 @@ rows = 6
 columns = 7
 # Create a 2D list to represent the board
 board = [[' ' for _ in range(columns)] for _ in range(rows)] 
+tokens = ['O', 'X']
 
 def print_board(board):
   #Column numbers
-  print("  1 2 3 4 5 6 7")
+  print('  1 2 3 4 5 6 7')
 
   #Each row with a border
   for row in board:
-    print('| ' + " ".join(row) + " |")
+    print('| ' + ' '.join(row) + " |")
 
   #Bottom border
-  print("+" + "-" * (columns * 2 + 1) + "+")  
+  print('+' + '-' * (columns * 2 + 1) + '+')  
+
+def drop_token(board, column, token):
+    #find the lowest empty row in the selected column / start from the 'bottom'
+    for row_index in range(len(board) -1, -1, -1):
+       if(board[row_index][column - 1] == ' '):
+          board[row_index][column - 1] = token
+          return True
+    return False  
+
+
+
+
+  # #check if column input is valid (1-7)
+  #   if(column >= 0 and column < columns):
+  #      #check if token is valid (X or O)
+  #     if(token in ['X', 'O']):
+  #       #find the lowest empty row in the selected column
+  #       for row in range(rows - 1, -1, -1):
+  #         if board[row][column - 1] == ' ':
+  #           board[row][column - 1] = token
+  #           return True
+
 
 
 
@@ -38,8 +61,7 @@ def print_board(board):
 #For each turn:
   #print instruction specific to player  
   #get input from player
-  #check if input is valid (1-7)
-  #find the lowest empty row in the selected column
+
   #place the player's specific token in that row
 
 #print board

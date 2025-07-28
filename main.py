@@ -1,28 +1,24 @@
-#print welcome message
 
+#print welcome message
 # print("Welcome to Connect Four!")
 # print("Players will take turns dropping tokens into columns.")
 # print("The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
 
-#establish player names and tokens
-# player1Name = input("Enter name for Player 1: ")
-# player2Name = input("Enter name for Player 2: ")
-# player1Token = input(f"{player1Name}, choose your token (X or O): ").upper()
+#establish tokens
+# player1Token = input(f'{player1Name}, choose your token (X or O): ').upper()
 # player2Token = 'O' if player1Token == 'X' else 'X'
+#establish who is going first/current player - 
+# currentPlayer = input(f'Who goes first? ({player1Name} or {player2Name}): ').strip()
+# currentToken = player1Token if currentPlayer == player1Name else player2Token
 
-#establish who is going first/current player
-# currentPlayer = input(f"Who goes first? ({player1Name} or {player2Name}): ").strip()
-
-# print("Wonderful! Let's start the game!")
-
-#initialize the board
+#initialize the board and create a 2D list to represent the board
+tokens = ['O', 'X']
 rows = 6
 columns = 7
-# Create a 2D list to represent the board
 board = [[' ' for _ in range(columns)] for _ in range(rows)] 
-tokens = ['O', 'X']
 
-def print_board(board):
+#print formatted board
+def print_board():
   #Column numbers
   print('  1 2 3 4 5 6 7')
 
@@ -31,9 +27,10 @@ def print_board(board):
     print('| ' + ' '.join(row) + " |")
 
   #Bottom border
-  print('+' + '-' * (columns * 2 + 1) + '+')  
+  print('+' + '-' * (columns * 2 - 1) + '+')  
 
-def drop_token(board, column, token):
+#add token to the board
+def drop_token(column, token):
     #find the lowest empty row in the selected column / start from the 'bottom'
     for row_index in range(len(board) -1, -1, -1):
        if(board[row_index][column - 1] == ' '):
@@ -42,7 +39,37 @@ def drop_token(board, column, token):
     return False  
 
 
+player1 = 'Player 1'
+player2 = 'Player 2'
+player1Token = 'X'
+player2Token = 'O'
 
+
+currentPlayer = player1
+currentToken = player1Token
+
+print('Wonderful! Let\'s start the game! Here is the board')
+print_board()
+
+#get input
+def get_player_input():
+  
+  while True:
+    colStr = input(f'{currentPlayer}, where would you like to place your token? (Col #)')
+    if colStr.isdigit():
+      colNum = int(colStr)
+      if colNum >= 1 and colNum <= 7:
+          return colNum
+      else:
+          print('Please enter a number between 1-7')
+    else:
+       print('Please enter a valid number between 1-7')
+
+column = get_player_input()
+drop_token(column, currentToken)
+print_board()
+
+#handle player input
 
   # #check if column input is valid (1-7)
   #   if(column >= 0 and column < columns):

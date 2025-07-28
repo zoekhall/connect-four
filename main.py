@@ -10,12 +10,23 @@
 #establish who is going first/current player - 
 # currentPlayer = input(f'Who goes first? ({player1Name} or {player2Name}): ').strip()
 # currentToken = player1Token if currentPlayer == player1Name else player2Token
+# print('Wonderful! Let\'s start the game!')
 
 #initialize the board and create a 2D list to represent the board
 tokens = ['O', 'X']
 rows = 6
 columns = 7
 board = [[' ' for _ in range(columns)] for _ in range(rows)] 
+
+player1 = 'Player 1'
+player2 = 'Player 2'
+player1Token = 'X'
+player2Token = 'O'
+
+currentPlayer = player1
+currentToken = 'X' if currentPlayer == player1 else '0'
+
+gameStatus = True
 
 #print formatted board
 def print_board():
@@ -30,25 +41,13 @@ def print_board():
   print('+' + '-' * (columns * 2 - 1) + '+')  
 
 #add token to the board
-def drop_token(column, token):
+def drop_token(col):
     #find the lowest empty row in the selected column / start from the 'bottom'
     for row_index in range(len(board) -1, -1, -1):
-       if(board[row_index][column - 1] == ' '):
-          board[row_index][column - 1] = token
-          return True
+       if(board[row_index][col] == ' '):
+          board[row_index][col] = currentToken
+          return row_index
     return False  
-
-player1 = 'Player 1'
-player2 = 'Player 2'
-player1Token = 'X'
-player2Token = 'O'
-
-currentPlayer = player1
-currentToken = player1Token
-
-gameStatus = True
-
-print('Wonderful! Let\'s start the game!')
 
 #get input
 def get_player_input():
@@ -57,39 +56,48 @@ def get_player_input():
     if colStr.isdigit():
       colNum = int(colStr)
       if colNum >= 1 and colNum <= 7:
-          return colNum
+          return colNum - 1
       else:
           print('Please enter a number between 1-7')
     else:
        print('Please enter a valid number between 1-7')
 
-while gameStatus:
-   column = get_player_input()
-   drop_token(column, currentToken)
+#win detection
+def detect_win(col, row):
+   #horizontal
+   #convert row into a searchable string
+   row = ''.join(board[row])
+   #check if 'XXXX' or 'OOOO' is in row_string
+   if currentToken * 4 in row:
+    return True
+   #verticle 
+   #create column and then make it into a searchable string
+   column = ''.join([board[rowIndex][col] for rowIndex in range(rows)])
+   if currentToken * 4 in column:
+        return True
+   #diagonal (ascending)
+   #[5, 0] [4, 1] [3, 2] [2, 3] [1, 4] [0, 5]
+   asc_diag = ''.join()
+
+
+
+
+
+   #diagonal (descending)
+
+# while gameStatus:
+#    #prompt player for input and get number
+   columnIndex = get_player_input()
+#    #drop the token once column is assigned an int
+   rowIndex = drop_token(columnIndex)
+#    #alternate players
+#    nextPlayer = player2 if currentPlayer == player1 else player1
+#    currentPlayer = nextPlayer
+#    #print the board
    print_board()
 
 
-  # #check if column input is valid (1-7)
-  #   if(column >= 0 and column < columns):
-  #      #check if token is valid (X or O)
-  #     if(token in ['X', 'O']):
-  #       #find the lowest empty row in the selected column
-  #       for row in range(rows - 1, -1, -1):
-  #         if board[row][column - 1] == ' ':
-  #           board[row][column - 1] = token
-  #           return True
 
-
-
-
-
-#For each turn:
-  #print instruction specific to player  
-  #get input from player
-
-  #place the player's specific token in that row
-
-#print board
 
 #After each turn:
   #check if the player has won - horizontal, vertical, or diagonal (both directions)

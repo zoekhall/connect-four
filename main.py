@@ -16,7 +16,7 @@
 tokens = ['O', 'X']
 rows = 6
 columns = 7
-board = [[' ' for _ in range(columns)] for _ in range(rows)] 
+board = [['_' for _ in range(columns)] for _ in range(rows)] 
 
 player1 = 'Player 1'
 player2 = 'Player 2'
@@ -31,14 +31,14 @@ gameStatus = True
 #print formatted board
 def print_board():
   #Column numbers
-  print('  1 2 3 4 5 6 7')
+  print('   1 2 3 4 5 6 7')
 
   #Each row with a border
-  for row in board:
-    print('| ' + ' '.join(row) + " |")
+  for rowIndex, row in enumerate(board):
+    print(f'{rowIndex}| {' '.join(row)} |')
 
   #Bottom border
-  print('+' + '-' * (columns * 2 - 1) + '+')  
+  print(f'+{'-' * (columns * 2 + 2)}+')
 
 #add token to the board
 def drop_token(col):
@@ -62,39 +62,30 @@ def get_player_input():
     else:
        print('Please enter a valid number between 1-7')
 
-#win detection
-def detect_win(col, row):
-   #horizontal
-   #convert row into a searchable string
-   row = ''.join(board[row])
-   #check if 'XXXX' or 'OOOO' is in row_string
-   if currentToken * 4 in row:
-    return True
-   #verticle 
-   #create column and then make it into a searchable string
-   column = ''.join([board[rowIndex][col] for rowIndex in range(rows)])
-   if currentToken * 4 in column:
+# #win detection
+def detect_win(row, col):
+   win_combo = currentToken * 4
+   horizontal_row = ''.join(board[row])
+   vertical_column = ''.join([board[rowIndex][col] for rowIndex in range(rows)])
+   asc_diag = ''.join(board[rowIndex][(row + col) - rowIndex] for rowIndex in range(rows) if 0 <= (row + col) - rowIndex < columns)
+   desc_diag = ''.join(board[rowIndex][rowIndex - (row - col)] for rowIndex in range(rows) if 0 <= rowIndex - (row - col) < columns)
+  
+   if win_combo in vertical_column or win_combo in horizontal_row or win_combo in asc_diag or win_combo in desc_diag:
         return True
-   #diagonal (ascending)
-   #[5, 0] [4, 1] [3, 2] [2, 3] [1, 4] [0, 5]
-   asc_diag = ''.join()
-
-
-
 
 
    #diagonal (descending)
 
 # while gameStatus:
 #    #prompt player for input and get number
-   columnIndex = get_player_input()
+   #columnIndex = get_player_input()
 #    #drop the token once column is assigned an int
-   rowIndex = drop_token(columnIndex)
+   #rowIndex = drop_token(columnIndex)
 #    #alternate players
 #    nextPlayer = player2 if currentPlayer == player1 else player1
 #    currentPlayer = nextPlayer
 #    #print the board
-   print_board()
+print_board()
 
 
 

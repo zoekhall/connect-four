@@ -1,5 +1,14 @@
 #print welcome message
-#print board
+
+print("Welcome to Connect Four!")
+print("Players will take turns dropping tokens into columns.")
+print("The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
+
+#establish player names and tokens
+player1Name = input("Enter name for Player 1: ")
+player2Name = input("Enter name for Player 2: ")
+player1Token = input(f"{player1Name}, choose your token (X or O): ").upper()
+player2Token = 'O' if player1Token == 'X' else 'X'
 
 #For each turn:
   #print instruction specific to player  
@@ -7,6 +16,8 @@
   #check if input is valid (1-7)
   #find the lowest empty row in the selected column
   #place the player's specific token in that row
+
+#print board
 
 #After each turn:
   #check if the player has won - horizontal, vertical, or diagonal (both directions)

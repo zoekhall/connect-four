@@ -1,3 +1,6 @@
+# ------------------------------- Constants / Repeated Messages ------------------------------- #
+YES_NO_PROMPT = "Please enter Yes or No."
+
 class Player: 
   def __init__(self, name, token):
     self.name = name
@@ -52,14 +55,13 @@ class ConnectFour:
   def detect_draw(self):
     return all(self.board[0][col] != ' ' for col in range(self.col))
 
-
 #print welcome message
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
 
 # ------------------------------- Player Set-Up ------------------------------ #
 #set up player 1
 while True: 
-  customize_player_1_name = input("Would the player who is going first like to choose their name? (type Yes or No)")
+  customize_player_1_name = input(f"Would the player who is going first like to choose their name? {YES_NO_PROMPT}")
   if customize_player_1_name == 'Yes':
     player_1_name = input("What would you like your name to be?")
     print(f"Great! The player going first is {player_1_name}")
@@ -69,10 +71,10 @@ while True:
     print('No worries! You will be known as Player 1')
     break
   else:
-    print("Please enter a valid answer - type either Yes or No")
+    print(YES_NO_PROMPT)
 
 while True: 
-  customize_player_1_token = input(f"{player_1_name}, would you like to choose your token? If not, one will be assigned to you (type Yes or No)")
+  customize_player_1_token = input(f"{player_1_name}, would you like to choose your token? If not, one will be assigned to you. {YES_NO_PROMPT}")
   if customize_player_1_name == 'Yes':
     player_1_token = input("What would you like your token to be? You may choose X or O")
     print(f"Great! {player_1_name} has chosen {player_1_token}")
@@ -82,7 +84,7 @@ while True:
     print('No worries! We will choose for you')
     break
   else:
-    print("Please enter a valid answer - type either Yes or No")
+    print(YES_NO_PROMPT)
 
 #set up player 2
 while True: 
@@ -96,11 +98,11 @@ while True:
     print("No worries! You will be known as Player 2")
     break
   else:
-    print("Please enter a valid answer - type either Yes or No")  
+    print(YES_NO_PROMPT)  
 
 if player_1_token == None: 
   while True: 
-    customize_player_2_token = input(f"{player_2_name}, would you like to choose your token? If not, one will be assigned to you (type Yes or No)")
+    customize_player_2_token = input(f"{player_2_name}, would you like to choose your token? If not, one will be assigned to you. {YES_NO_PROMPT}")
     if customize_player_2_name == 'Yes':
       player_2_token = input("What would you like your token to be? You may choose X or O").capitalize()
       player_1_token = 'X' if player_2_token == 'O' else 'O'
@@ -110,7 +112,7 @@ if player_1_token == None:
       print('No worries! We will choose for you')
       break
     else:
-      print("Please enter a valid answer - type either Yes or No")
+      print(YES_NO_PROMPT)
 else: 
   player_2_token = 'O' if player_1_token == 'X' else 'X'
 
@@ -121,9 +123,10 @@ player_2 = Player(player_2_name, player_2_token)
 print("Alright! Let's set up your board")
 
 while True: 
-  customize_board = input("Would you like to customize your board? The default is 6 rows/7 columns (Please type Yes or No)")
+  customize_board = input(f"Would you like to customize your board? The default is 6 rows/7 columns. {YES_NO_PROMPT}")
   if customize_board == 'Yes':
-    customize_rows = input("Would you like to customize the number of rows? (Please type Yes or No)")
+    #row customization 
+    customize_rows = input("Would you like to customize the number of rows? (Y/N)")
     while True:
       if customize_rows == 'Yes':
         row_count = input("How many rows would you like your board to have? You can have between 4-12")
@@ -136,8 +139,8 @@ while True:
         print("Sounds good! Your board will have 6 rows")
         break
       else: 
-        print("Please enter a valid answer - type either Yes or No")
-      
+        print(YES_NO_PROMPT)
+    # customize_columns = input("Would you like to customize the number of rows? (Y/N)")    
 
 
 

@@ -72,8 +72,20 @@ def detect_win(row, col):
   
    if win_combo in vertical_column or win_combo in horizontal_row or win_combo in asc_diag or win_combo in desc_diag:
       return True
+   
+def detect_draw():
+   return any(' ' in row for row in board)  
 
-  #game play
+def set_game_status(row, col):
+   if detect_win(row, col):
+      print('Way to go!')
+      gameStatus = False
+   elif detect_draw():
+      print('So sad')  
+      gameStatus = False
+
+
+#game play
 while gameStatus:
    #prompt player for input and get number
    columnIndex = get_player_input()

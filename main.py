@@ -56,6 +56,7 @@ class ConnectFour:
 #print welcome message
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
 
+#set up player 1
 while True: 
   customize_player_1_name = input("Would the player who is going first like to choose their name? (type Yes or No)")
   if customize_player_1_name == 'Yes':
@@ -68,10 +69,50 @@ while True:
   else:
     print("Please enter a valid answer - type either Yes or No")
 
-  
+while True: 
+  customize_player_1_token = input(f"{player_1_name}, would you like to choose your token? If not, one will be assigned to you (type Yes or No)")
+  if customize_player_1_name == 'Yes':
+    player_1_token = input("What would you like your token to be? You may choose X or O")
+    print(f"Great! {player_1_name} has chosen {player_1_token}")
+    break
+  elif customize_player_1_name == 'No':
+    player_1_token = None
+    print('No worries! We will choose for you')
+    break
+  else:
+    print("Please enter a valid answer - type either Yes or No")
 
+#set up player 2
+while True: 
+  customize_player_2_name = input("Alright! To the player going second. Would you like to choose your name? (type Yes or No)")
+  if customize_player_2_name == 'Yes':
+    player_2_name = input("What would you like your name to be?")
+    print(f"Great! The player going second is {player_2_name}")
+    break
+  elif customize_player_2_name == 'No':
+    print('No worries! You will be known as Player 2')
+    break
+  else:
+    print("Please enter a valid answer - type either Yes or No")  
 
+if player_1_token == None: 
+  while True: 
+    customize_player_2_token = input(f"{player_2_name}, would you like to choose your token? If not, one will be assigned to you (type Yes or No)")
+    if customize_player_2_name == 'Yes':
+      player_2_token = input("What would you like your token to be? You may choose X or O").capitalize()
+      player_1_token = 'X' if player_2_token == 'O' else 'O'
+      print(f"Great! {player_2_name} has chosen {player_2_token}")
+      break
+    elif customize_player_2_name == 'No':
+      print('No worries! We will choose for you')
+      break
+    else:
+      print("Please enter a valid answer - type either Yes or No")
+else: 
+  player_2_token = 'O' if player_1_token == 'X' else 'X'
 
+player_1 = Player(player_1_name, player_1_token)
+player_2 = Player(player_2_name, player_2_token)
 
 
 

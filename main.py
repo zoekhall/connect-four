@@ -3,12 +3,12 @@ class Player:
     self.name = name
     self.token = token 
 class ConnectFour:
-  def __init__(self, player_1=None, player_2=None, rows=6, cols=7):
+  def __init__(self, player_1, player_2, rows=6, cols=7):
     self.rows = rows
     self.cols = cols 
     self.board = [[' ' for _ in range(self.cols)] for _ in range(self.rows)] 
-    self.player_1 = player_1 or Player("Player 1", "X")
-    self.player_2 = player_2 or Player("Player 2", "0")
+    self.player_1 = player_1 
+    self.player_2 = player_2
     self.current_player = self.player_1 
     self.current_token = self.player_1.token if self.current_player == self.player_1 else self.player_2.token
     self.game_active = True
@@ -56,6 +56,7 @@ class ConnectFour:
 #print welcome message
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
 
+# ------------------------------- Player Set-Up ------------------------------ #
 #set up player 1
 while True: 
   customize_player_1_name = input("Would the player who is going first like to choose their name? (type Yes or No)")
@@ -64,6 +65,7 @@ while True:
     print(f"Great! The player going first is {player_1_name}")
     break
   elif customize_player_1_name == 'No':
+    player_1_name = 'Player 1'
     print('No worries! You will be known as Player 1')
     break
   else:
@@ -90,7 +92,8 @@ while True:
     print(f"Great! The player going second is {player_2_name}")
     break
   elif customize_player_2_name == 'No':
-    print('No worries! You will be known as Player 2')
+    player_2_name = 'Player 2'
+    print("No worries! You will be known as Player 2")
     break
   else:
     print("Please enter a valid answer - type either Yes or No")  
@@ -114,10 +117,32 @@ else:
 player_1 = Player(player_1_name, player_1_token)
 player_2 = Player(player_2_name, player_2_token)
 
+# ------------------------------- Board Set-Up ------------------------------- #
+print("Alright! Let's set up your board")
+
+while True: 
+  customize_board = input("Would you like to customize your board? The default is 6 rows/7 columns (Please type Yes or No)")
+  if customize_board == 'Yes':
+    customize_rows = input("Would you like to customize the number of rows? (Please type Yes or No)")
+    while True:
+      if customize_rows == 'Yes':
+        row_count = input("How many rows would you like your board to have? You can have between 4-12")
+        if customize_rows < 4 or customize_rows > 12 or customize_rows.digit() == False:
+          print("Please enter a valid number of rows. Any number between 4 - 12")
+        else:
+          print(f"Wonderful! Your board will have {customize_rows} rows")
+          break
+      elif customize_rows == 'No':
+        print("Sounds good! Your board will have 6 rows")
+        break
+      else: 
+        print("Please enter a valid answer - type either Yes or No")
+      
 
 
 
-game = ConnectFour()
+
+game = ConnectFour(player_1, player_2)
 
 #game play
 while game_status:

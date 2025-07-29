@@ -3,15 +3,16 @@ class Player:
     self.name = name
     self.token = token 
 class ConnectFour:
-  def __init__(self, rows=6, columns=7, player_1=None, player_2=None):
+  def __init__(self, rows=6, cols=7, player_1=None, player_2=None):
     self.rows = rows
-    self.columns = columns 
+    self.cols = cols 
     self.board = [[' ' for _ in range(columns)] for _ in range(rows)] 
     self.player_1 = player_1 or Player('Player 1', 'X')
     self.player_2 = player_2 or Player('Player 2', '0')
     self.current_player = self.player_1 
     self.current_token = self.player_1.token if self.current_player == self.player_1.name else self.player_2.token
     self.game_active = True
+    self.win_combo = self.current_token * 4
   
   def __repr__(self):
     print('   1 2 3 4 5 6 7') #column #s
@@ -38,16 +39,14 @@ class ConnectFour:
             return row_index
       return False  
 
-#win detection
-def detect_win(row, col):
-  win_combo = current_token * 4
-
-  horizontal_row = ''.join(board[row])
-  vertical_col = ''.join([board[rowIndex][col] for rowIndex in range(rows)])
-  asc_diag = ''.join(board[rowIndex][(row + col) - rowIndex] for rowIndex in range(rows) if 0 <= (row + col) - rowIndex < columns)
-  desc_diag = ''.join(board[rowIndex][rowIndex - (row - col)] for rowIndex in range(rows) if 0 <= rowIndex - (row - col) < columns)
-  
-  return win_combo in vertical_col or win_combo in horizontal_row or win_combo in asc_diag or win_combo in desc_diag
+  #win detection
+  def detect_win(self, row, col):
+    horizontal_row = ''.join(self.board[row])
+    vertical_col = ''.join([self.board[rowIndex][col] for rowIndex in range(self.rows)])
+    asc_diag = ''.join(self.board[rowIndex][(row + col) - rowIndex] for rowIndex in range(self.rows) if 0 <= (row + col) - rowIndex < self.cols)
+    desc_diag = ''.join(self.board[rowIndex][rowIndex - (row - col)] for rowIndex in range(self.current_playerrows) if 0 <= rowIndex - (row - col) < self.cols)
+    
+    return any(self.win_combo in line for line in [horizontal_row, vertical_col, asc_diag, desc_diag])
 
 #draw detection
 def detect_draw():

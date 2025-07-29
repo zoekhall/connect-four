@@ -3,12 +3,12 @@ class Player:
     self.name = name
     self.token = token 
 class ConnectFour:
-  def __init__(self, player_1, player_2, rows=6, cols=7):
+  def __init__(self, player_1=None, player_2=None, rows=6, cols=7):
     self.rows = rows
     self.cols = cols 
     self.board = [[' ' for _ in range(self.cols)] for _ in range(self.rows)] 
-    self.player_1 = player_1
-    self.player_2 = player_2
+    self.player_1 = player_1 or Player("Player 1", "X")
+    self.player_2 = player_2 or Player("Player 2", "0")
     self.current_player = self.player_1 
     self.current_token = self.player_1.token if self.current_player == self.player_1 else self.player_2.token
     self.game_active = True
@@ -52,12 +52,22 @@ class ConnectFour:
   def detect_draw(self):
     return all(self.board[0][col] != ' ' for col in range(self.col))
 
+
 #print welcome message
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
-customize_player_1_name = input("Would the player who is going first like to choose their name? (type Yes or No)")
-player_1_name = "Player 1"
 
-if customize_player_1_name == 'Yes':
+while True: 
+  customize_player_1_name = input("Would the player who is going first like to choose their name? (type Yes or No)")
+  if customize_player_1_name == 'Yes':
+    player_1_name = input("What would you like your name to be?")
+    print(f"Great! The player going first is {player_1_name}")
+    break
+  elif customize_player_1_name == 'No':
+    print('No worries! You will be known as Player 1')
+    break
+  else:
+    print("Please enter a valid answer - type either Yes or No")
+
   
 
 

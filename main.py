@@ -10,6 +10,7 @@ class ConnectFour:
     self.player_1 = player_1 or Player('Player 1', 'X')
     self.player_2 = player_2 or Player('Player 2', '0')
     self.current_player = self.player_1 
+    self.current_token = self.player_1.token if self.current_player == self.player_1.name else self.player_2.token
     self.game_active = True
   
   def __repr__(self):
@@ -18,6 +19,7 @@ class ConnectFour:
       print(f'{rowIndex}| {' '.join(row)} |') 
     print(f'+{'-' * (self.columns * 2 + 2)}+') #formatted bottom border 
 
+  #ask for/handle player's input
   def get_player_input(self): 
     while True:
       colStr = input(f'{self.current_player}, where would you like to place your token? (choose a column #)')
@@ -27,15 +29,14 @@ class ConnectFour:
       else:
         print('Please enter a valid number between 1-7')
 
-
-#add token to the board
-def drop_token(col):
-    #find the lowest empty row in the selected column / start from the 'bottom'
-    for row_index in range(len(board) -1, -1, -1):
-      if(board[row_index][col] == ' '):
-          board[row_index][col] = current_token
-          return row_index
-    return False  
+  #add token to the board
+  def drop_token(self, col):
+      #find the lowest empty row in the selected column / start from the 'bottom'
+      for row_index in range(len(self.board) -1, -1, -1):
+        if(self.board[row_index][col] == ' '):
+            self.board[row_index][col] = self.current_token
+            return row_index
+      return False  
 
 #win detection
 def detect_win(row, col):
@@ -96,6 +97,6 @@ while game_status:
 # player_2_token = 'O' if player_1_token == 'X' else 'X'
 #establish who is going first/current player - 
 # current_player = input(f'Who goes first? ({player_1Name} or {player_2Name}): ').strip()
-# current_token = player_1_token if current_player == player_1Name else player_2_token
+
 # print('Wonderful! Let\'s start the game!')
 #establish tokens

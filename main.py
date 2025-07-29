@@ -1,4 +1,3 @@
-# ----- board basics ----- #
 class Player: 
   def __init__(self, name, token):
     self.name = name
@@ -11,17 +10,15 @@ class ConnectFour:
     self.player_1 = player_1 or Player('Player 1', 'X')
     self.player_2 = player_2 or Player('Player 2', '0')
     self.current_player = self.player_1 
-    self.game_status = True
+    self.game_active = True
+  
+  def __repr__(self):
+    print('   1 2 3 4 5 6 7') #column #s
+    for rowIndex, row in enumerate(board): #formatted rows
+      print(f'{rowIndex}| {' '.join(row)} |') 
+    print(f'+{'-' * (columns * 2 + 2)}+') #formatted bottom border 
 
-# ---------------------------- player information ---------------------------- #
-player_1 = 'Player 1'
-player_2 = 'Player 2'
-player_1_token = 'X'
-player_2_token = 'O'
-current_player = player_1
-current_token = 'X' if current_player == player_1 else '0'
 
-# ------------------------------ game functions ------------------------------ #
 #print formatted board
 def print_board():
   print('   1 2 3 4 5 6 7') #column #s

@@ -1,70 +1,47 @@
-
-#print welcome message
-# print("Welcome to Connect Four!")
-# print("Players will take turns dropping tokens into columns.")
-# print("The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
-
-#establish tokens
-# player1Token = input(f'{player1Name}, choose your token (X or O): ').upper()
-# player2Token = 'O' if player1Token == 'X' else 'X'
-#establish who is going first/current player - 
-# currentPlayer = input(f'Who goes first? ({player1Name} or {player2Name}): ').strip()
-# currentToken = player1Token if currentPlayer == player1Name else player2Token
-# print('Wonderful! Let\'s start the game!')
-
-#initialize the board and create a 2D list to represent the board
-tokens = ['O', 'X']
+# ----- board basics ----- #
 rows = 6
 columns = 7
 board = [['_' for _ in range(columns)] for _ in range(rows)] 
+#determines the status of the game (True = ongoing)
+game_status = True
 
-player1 = 'Player 1'
-player2 = 'Player 2'
-player1Token = 'X'
-player2Token = 'O'
+# ---------------------------- player information ---------------------------- #
+player_1 = 'Player 1'
+player_2 = 'Player 2'
+player_1_token = 'X'
+player_2_token = 'O'
+current_player = player_1
+current_token = 'X' if current_player == player_1 else '0'
 
-currentPlayer = player1
-currentToken = 'X' if currentPlayer == player1 else '0'
-
-gameStatus = True
-
+# ------------------------------ game functions ------------------------------ #
 #print formatted board
 def print_board():
-  #Column numbers
-  print('   1 2 3 4 5 6 7')
+  print('   1 2 3 4 5 6 7') #column #s
+  for rowIndex, row in enumerate(board): #formatted rows
+    print(f'{rowIndex}| {' '.join(row)} |') 
+  print(f'+{'-' * (columns * 2 + 2)}+') #formatted bottom border 
 
-  #Each row with a border
-  for rowIndex, row in enumerate(board):
-    print(f'{rowIndex}| {' '.join(row)} |')
-
-  #Bottom border
-  print(f'+{'-' * (columns * 2 + 2)}+')
+#get and validate player input
+def get_player_input():
+  while True:
+    colStr = input(f'{current_player}, where would you like to place your token? (choose a column #)')
+    if colStr.isdigit():
+      colNum = int(colStr)
+      return colNum - 1 if colNum >= 1 and colNum <= 7 else print('Please enter a number between 1-7')
+    else:
+      print('Please enter a valid number between 1-7')
 
 #add token to the board
 def drop_token(col):
     #find the lowest empty row in the selected column / start from the 'bottom'
     for row_index in range(len(board) -1, -1, -1):
        if(board[row_index][col] == ' '):
-          board[row_index][col] = currentToken
+          board[row_index][col] = current_token
           return row_index
     return False  
-
-#get input
-def get_player_input():
-  while True:
-    colStr = input(f'{currentPlayer}, where would you like to place your token? (Col #)')
-    if colStr.isdigit():
-      colNum = int(colStr)
-      if colNum >= 1 and colNum <= 7:
-          return colNum - 1
-      else:
-          print('Please enter a number between 1-7')
-    else:
-       print('Please enter a valid number between 1-7')
-
 #win detection
 def detect_win(row, col):
-   win_combo = currentToken * 4
+   win_combo = current_token * 4
    horizontal_row = ''.join(board[row])
    vertical_column = ''.join([board[rowIndex][col] for rowIndex in range(rows)])
    asc_diag = ''.join(board[rowIndex][(row + col) - rowIndex] for rowIndex in range(rows) if 0 <= (row + col) - rowIndex < columns)
@@ -79,34 +56,38 @@ def detect_draw():
 def set_game_status(row, col):
    if detect_win(row, col):
       print('Way to go!')
-      gameStatus = False
+      game_status = False
    elif detect_draw():
-      print('So sad')  
-      gameStatus = False
+      print('So sad. No-one wins')  
+      game_status = False
+
+#print welcome message
+print('Welcome to Connect Four! Players will take turns dropping tokens into columns.')
+print('The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!')
 
 
+#establish tokens
+# player_1_token = input(f'{player_1Name}, choose your token (X or O): ').upper()
+# player_2_token = 'O' if player_1_token == 'X' else 'X'
+#establish who is going first/current player - 
+# current_player = input(f'Who goes first? ({player_1Name} or {player_2Name}): ').strip()
+# current_token = player_1_token if current_player == player_1Name else player_2_token
+# print('Wonderful! Let\'s start the game!')
 #game play
-while gameStatus:
+while game_status:
    #prompt player for input and get number
    columnIndex = get_player_input()
    #drop the token once column is assigned a valid int
    rowIndex = drop_token(columnIndex)
+
    print_board()
 
-   if detect_win(rowIndex, columnIndex):
-      print('Way to go!')
-   else:
-      currentPlayer = player2 if currentPlayer == player1 else player1
+   set_game_status(rowIndex, columnIndex)
+
+   if not game_status: current_player = player_2 if current_player == player_1 else player_1
 
 
 
-
-
-  #check if the game is a draw - if all columns are full
-    #if draw, print draw message and exit
-    #check if the game is still ongoing
-      #if ongoing, continue to next player's turn
-  #else continue to next player's turn
 
 #Edge cases to look out for:
   #Response if player inputs a column that is full

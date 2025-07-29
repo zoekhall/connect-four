@@ -1,9 +1,17 @@
 # ----- board basics ----- #
-rows = 6
-columns = 7
-board = [['_' for _ in range(columns)] for _ in range(rows)] 
-#determines the status of the game (True = ongoing)
-game_status = True
+class Player: 
+  def __init__(self, name, token):
+    self.name = name
+    self.token = token 
+class ConnectFour:
+  def __init__(self, rows=6, columns=7, player_1=None, player_2=None):
+    self.rows = rows
+    self.columns = columns 
+    self.board = [[' ' for _ in range(columns)] for _ in range(rows)] 
+    self.player_1 = player_1 or Player('Player 1', 'X')
+    self.player_2 = player_2 or Player('Player 2', '0')
+    self.current_player = self.player_1 
+    self.game_status = True
 
 # ---------------------------- player information ---------------------------- #
 player_1 = 'Player 1'
@@ -53,7 +61,7 @@ def detect_win(row, col):
 
 #draw detection
 def detect_draw():
-  return any(' ' in row for row in board)  
+  return all(' ' in row for row in board)  
 
 def set_game_status(row, col):
    if detect_win(row, col):
@@ -67,19 +75,11 @@ def set_game_status(row, col):
 print('Welcome to Connect Four! Players will take turns dropping tokens into columns.')
 print('The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!')
 
-
-#establish tokens
-# player_1_token = input(f'{player_1Name}, choose your token (X or O): ').upper()
-# player_2_token = 'O' if player_1_token == 'X' else 'X'
-#establish who is going first/current player - 
-# current_player = input(f'Who goes first? ({player_1Name} or {player_2Name}): ').strip()
-# current_token = player_1_token if current_player == player_1Name else player_2_token
-# print('Wonderful! Let\'s start the game!')
 #game play
 while game_status:
-   #prompt player for input and get number
+   #prompt player for input and get valid col #
    columnIndex = get_player_input()
-   #drop the token once column is assigned a valid int
+   #drop the token once column is assigned a valid int and get row #
    rowIndex = drop_token(columnIndex)
 
    print_board()
@@ -101,3 +101,12 @@ while game_status:
   #Add ability for players to choose their tokens (X or O)
   #Add ability for players to choose who goes first
   #Add ability for players to choose their name
+
+
+  # player_1_token = input(f'{player_1Name}, choose your token (X or O): ').upper()
+# player_2_token = 'O' if player_1_token == 'X' else 'X'
+#establish who is going first/current player - 
+# current_player = input(f'Who goes first? ({player_1Name} or {player_2Name}): ').strip()
+# current_token = player_1_token if current_player == player_1Name else player_2_token
+# print('Wonderful! Let\'s start the game!')
+#establish tokens

@@ -3,14 +3,14 @@ class Player:
     self.name = name
     self.token = token 
 class ConnectFour:
-  def __init__(self, rows=6, cols=7, player_1=None, player_2=None):
+  def __init__(self, player_1, player_2, rows=6, cols=7):
     self.rows = rows
     self.cols = cols 
-    self.board = [[' ' for _ in range(columns)] for _ in range(rows)] 
-    self.player_1 = player_1 or Player('Player 1', 'X')
-    self.player_2 = player_2 or Player('Player 2', '0')
+    self.board = [[' ' for _ in range(self.cols)] for _ in range(self.rows)] 
+    self.player_1 = player_1
+    self.player_2 = player_2
     self.current_player = self.player_1 
-    self.current_token = self.player_1.token if self.current_player == self.player_1.name else self.player_2.token
+    self.current_token = self.player_1.token if self.current_player == self.player_1 else self.player_2.token
     self.game_active = True
     self.win_combo = self.current_token * 4
   
@@ -23,12 +23,12 @@ class ConnectFour:
   #ask for/handle player's input
   def get_player_input(self): 
     while True:
-      colStr = input(f'{self.current_player}, where would you like to place your token? (choose a column #)')
+      colStr = input(f"{self.current_player}, where would you like to place your token? (choose a column #)")
       if colStr.isdigit():
         colNum = int(colStr)
-        return colNum - 1 if colNum >= 1 and colNum <= 7 else print('Please enter a number between 1-7')
+        return colNum - 1 if colNum >= 1 and colNum <= self.cols else print(f"Please enter a number between 1-{self.cols}")
       else:
-        print('Please enter a valid number between 1-7')
+        print(f"Please enter a valid number between 1-{self.cols}")
 
   #add token to the board
   def drop_token(self, col):
@@ -48,21 +48,25 @@ class ConnectFour:
     
     return any(self.win_combo in line for line in [horizontal_row, vertical_col, asc_diag, desc_diag])
 
-#draw detection
-def detect_draw():
-  return all(' ' in row for row in board)  
-
-def set_game_status(row, col):
-   if detect_win(row, col):
-      print('Way to go!')
-      game_status = False
-   elif detect_draw():
-      print('So sad. No-one wins')  
-      game_status = False
+  #draw detection
+  def detect_draw(self):
+    return all(self.board[0][col] != ' ' for col in range(self.col))
 
 #print welcome message
-print('Welcome to Connect Four! Players will take turns dropping tokens into columns.')
-print('The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!')
+print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
+customize_player_1_name = input("Would the player who is going first like to choose their name? (type Yes or No)")
+player_1_name = "Player 1"
+
+if customize_player_1_name == 'Yes':
+  
+
+
+
+
+
+
+
+game = ConnectFour()
 
 #game play
 while game_status:
@@ -78,7 +82,13 @@ while game_status:
    if not game_status: current_player = player_2 if current_player == player_1 else player_1
 
 
-
+# def set_game_status(row, col):
+  #   if detect_win(row, col):
+  #       print('Way to go!')
+  #       game_status = False
+  #   elif detect_draw():
+  #       print('So sad. No-one wins')  
+  #       game_status = False
 
 #Edge cases to look out for:
   #Response if player inputs a column that is full

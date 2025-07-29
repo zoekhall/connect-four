@@ -35,23 +35,25 @@ def get_player_input():
 def drop_token(col):
     #find the lowest empty row in the selected column / start from the 'bottom'
     for row_index in range(len(board) -1, -1, -1):
-       if(board[row_index][col] == ' '):
+      if(board[row_index][col] == ' '):
           board[row_index][col] = current_token
           return row_index
     return False  
+
 #win detection
 def detect_win(row, col):
-   win_combo = current_token * 4
-   horizontal_row = ''.join(board[row])
-   vertical_column = ''.join([board[rowIndex][col] for rowIndex in range(rows)])
-   asc_diag = ''.join(board[rowIndex][(row + col) - rowIndex] for rowIndex in range(rows) if 0 <= (row + col) - rowIndex < columns)
-   desc_diag = ''.join(board[rowIndex][rowIndex - (row - col)] for rowIndex in range(rows) if 0 <= rowIndex - (row - col) < columns)
+  win_combo = current_token * 4
+
+  horizontal_row = ''.join(board[row])
+  vertical_col = ''.join([board[rowIndex][col] for rowIndex in range(rows)])
+  asc_diag = ''.join(board[rowIndex][(row + col) - rowIndex] for rowIndex in range(rows) if 0 <= (row + col) - rowIndex < columns)
+  desc_diag = ''.join(board[rowIndex][rowIndex - (row - col)] for rowIndex in range(rows) if 0 <= rowIndex - (row - col) < columns)
   
-   if win_combo in vertical_column or win_combo in horizontal_row or win_combo in asc_diag or win_combo in desc_diag:
-      return True
-   
+  return win_combo in vertical_col or win_combo in horizontal_row or win_combo in asc_diag or win_combo in desc_diag
+
+#draw detection
 def detect_draw():
-   return any(' ' in row for row in board)  
+  return any(' ' in row for row in board)  
 
 def set_game_status(row, col):
    if detect_win(row, col):

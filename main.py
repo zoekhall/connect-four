@@ -14,27 +14,19 @@ class ConnectFour:
   
   def __repr__(self):
     print('   1 2 3 4 5 6 7') #column #s
-    for rowIndex, row in enumerate(board): #formatted rows
+    for rowIndex, row in enumerate(self.board): #formatted rows
       print(f'{rowIndex}| {' '.join(row)} |') 
-    print(f'+{'-' * (columns * 2 + 2)}+') #formatted bottom border 
+    print(f'+{'-' * (self.columns * 2 + 2)}+') #formatted bottom border 
 
+  def get_player_input(self): 
+    while True:
+      colStr = input(f'{self.current_player}, where would you like to place your token? (choose a column #)')
+      if colStr.isdigit():
+        colNum = int(colStr)
+        return colNum - 1 if colNum >= 1 and colNum <= 7 else print('Please enter a number between 1-7')
+      else:
+        print('Please enter a valid number between 1-7')
 
-#print formatted board
-def print_board():
-  print('   1 2 3 4 5 6 7') #column #s
-  for rowIndex, row in enumerate(board): #formatted rows
-    print(f'{rowIndex}| {' '.join(row)} |') 
-  print(f'+{'-' * (columns * 2 + 2)}+') #formatted bottom border 
-
-#get and validate player input
-def get_player_input():
-  while True:
-    colStr = input(f'{current_player}, where would you like to place your token? (choose a column #)')
-    if colStr.isdigit():
-      colNum = int(colStr)
-      return colNum - 1 if colNum >= 1 and colNum <= 7 else print('Please enter a number between 1-7')
-    else:
-      print('Please enter a valid number between 1-7')
 
 #add token to the board
 def drop_token(col):

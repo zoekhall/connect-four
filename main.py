@@ -62,7 +62,7 @@ def get_player_input():
     else:
        print('Please enter a valid number between 1-7')
 
-# #win detection
+#win detection
 def detect_win(row, col):
    win_combo = currentToken * 4
    horizontal_row = ''.join(board[row])
@@ -71,29 +71,25 @@ def detect_win(row, col):
    desc_diag = ''.join(board[rowIndex][rowIndex - (row - col)] for rowIndex in range(rows) if 0 <= rowIndex - (row - col) < columns)
   
    if win_combo in vertical_column or win_combo in horizontal_row or win_combo in asc_diag or win_combo in desc_diag:
-        return True
+      return True
+
+  #game play
+while gameStatus:
+   #prompt player for input and get number
+   columnIndex = get_player_input()
+   #drop the token once column is assigned a valid int
+   rowIndex = drop_token(columnIndex)
+   print_board()
+
+   if detect_win(rowIndex, columnIndex):
+      print('Way to go!')
+   else:
+      currentPlayer = player2 if currentPlayer == player1 else player1
 
 
-   #diagonal (descending)
-
-# while gameStatus:
-#    #prompt player for input and get number
-   #columnIndex = get_player_input()
-#    #drop the token once column is assigned an int
-   #rowIndex = drop_token(columnIndex)
-#    #alternate players
-#    nextPlayer = player2 if currentPlayer == player1 else player1
-#    currentPlayer = nextPlayer
-#    #print the board
-print_board()
 
 
 
-
-#After each turn:
-  #check if the player has won - horizontal, vertical, or diagonal (both directions)
-    #if player has won, print winning message and exit
-    #else, reprint the board
   #check if the game is a draw - if all columns are full
     #if draw, print draw message and exit
     #check if the game is still ongoing

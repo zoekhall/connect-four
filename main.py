@@ -1,7 +1,10 @@
 # ------------------------------- Constants / Repeated Messages ------------------------------- #
-YES_NO_ERROR_PROMPT = "Please enter Yes/No."
+YES_NO_PROMPT = "Please enter Yes/No"
 PLAYER_PROMPT = "Would you like to choose your name? Yes/No"
 NAME_PROMPT = "What would you like your name to be?"
+TOKEN_PROMPT = "Would you like to choose your token? Yes/No"
+TYPE_OF_TOKEN_PROMPT = "What would you like your token to be? You may choose X/O"
+
 VALID_YES = ['YES', 'Y', 'TRUE', '1']
 VALID_NO = ['NO', 'N', 'FALSE', '0']
 
@@ -72,11 +75,20 @@ while True:
     print(f"Great! The player going first is {player_1_name}")
     break
   else:   
-    print(YES_NO_ERROR_PROMPT)
+    print(YES_NO_PROMPT)
 
 while True: 
-  customize_player_1_token = input(f"{player_1_name}, would you like to choose your token? If not, one will be assigned to you. {YES_NO_PROMPT}")
-  if customize_player_1_name == 'Yes':
+  ask_player_token_1 = input(f"{player_1_name}, {TOKEN_PROMPT}")
+  if ask_player_token_1 in VALID_NO + VALID_YES:
+
+
+
+    player_1_name = input(NAME_PROMPT) if ask_player_name_1 in VALID_YES else 'Player 1'
+    print(f"Great! The player going first is {player_1_name}")
+    break
+  else:   
+    print(YES_NO_PROMPT)
+
     player_1_token = input("What would you like your token to be? You may choose X or O")
     print(f"Great! {player_1_name} has chosen {player_1_token}")
     break
@@ -93,10 +105,13 @@ while True:
   ask_player_name_2 = input(PLAYER_PROMPT).upper()
   if ask_player_name_2 in VALID_NO + VALID_YES:
     player_2_name = input(NAME_PROMPT) if ask_player_name_2 in VALID_YES else 'Player 2'
-    print(f"Great! The player going second is {player_2_name}")
-    break
+    if player_2_name == player_1_name: 
+      print("Please enter a unique name")
+    else:  
+      print(f"Great! The player going second is {player_2_name}")
+      break
   else:   
-    print(YES_NO_ERROR_PROMPT)
+    print(YES_NO_PROMPT)
 
 
 

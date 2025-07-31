@@ -1,12 +1,14 @@
 # ------------------------------- Constants / Repeated Messages ------------------------------- #
-YES_NO_PROMPT = "Please enter Yes/No"
-PLAYER_PROMPT = "Would you like to choose your name? Yes/No"
+YES_NO_PROMPT = "Please enter Yes or No"
+PLAYER_PROMPT = "Would you like to choose your name? Yes or No"
 NAME_PROMPT = "What would you like your name to be?"
-TOKEN_PROMPT = "Would you like to choose your token? Yes/No"
-TYPE_OF_TOKEN_PROMPT = "What would you like your token to be? You may choose X/O"
+TOKEN_PROMPT = "Would you like to choose your token? Yes or No"
+TYPE_OF_TOKEN_PROMPT = "What would you like your token to be? You may choose X or O"
+VALID_TOKEN_PROMPT = "Please choose a valid token. Either X or O"
 
 VALID_YES = ['YES', 'Y', 'TRUE', '1']
 VALID_NO = ['NO', 'N', 'FALSE', '0']
+VALID_TOKENS = ['X', 'O']
 
 class Player: 
   def __init__(self, name, token):
@@ -76,21 +78,8 @@ while True:
     break
   else:   
     print(YES_NO_PROMPT)
-
-#set up player 1 token
-while True: 
-  ask_player_token_1 = input(f"{player_1_name}, {TOKEN_PROMPT}")
-  if ask_player_token_1 in VALID_NO + VALID_YES:
-    player_1_token = input(f"{player_1_name}, {TOKEN_PROMPT}") if ask_player_token_1 in VALID_YES else None
-    print("Okay, we'll give player 2 the opportunity to choose or one will be assigned to you") if player_1_token == None else print(f"Great! {player_1_name} has chosen {player_1_token}")
-    break 
-  else:
-    print(YES_NO_PROMPT)
-
-
-  
-
-#set up player 2
+    
+#set up player 2 name
 print("Now - let's set up the second player")
 while True: 
   ask_player_name_2 = input(PLAYER_PROMPT).upper()
@@ -102,26 +91,40 @@ while True:
       print(f"Great! The player going second is {player_2_name}")
       break
   else:   
+    print(YES_NO_PROMPT)    
+
+#set up player 1 token
+while True: 
+  ask_player_token_1 = input(f"{player_1_name}, {TOKEN_PROMPT}")
+  if ask_player_token_1 in VALID_NO + VALID_YES:
+    player_1_token = input(f"{player_1_name}, {TYPE_OF_TOKEN_PROMPT}").upper() if ask_player_token_1 in VALID_YES else None
+    if player_1_token in VALID_TOKENS:
+      print(f"Okay, we'll give {player_2_name} the opportunity to choose and then assign a token to you") if player_1_token == None else print(f"Great! {player_1_name} has chosen {player_1_token}")
+      break 
+    else:
+      print(VALID_TOKEN_PROMPT)
+  else:
+    print(YES_NO_PROMPT)
+
+#set up player 2 token 
+while True: 
+  ask_player_token_1 = input(f"{player_1_name}, {TOKEN_PROMPT}")
+  if ask_player_token_1 in VALID_NO + VALID_YES:
+    player_1_token = input(f"{player_1_name}, {TYPE_OF_TOKEN_PROMPT}").upper() if ask_player_token_1 in VALID_YES else None
+    if player_1_token in VALID_TOKENS:
+      print(f"Okay, we'll give {player_2_name} the opportunity to choose and then assign a token to you") if player_1_token == None else print(f"Great! {player_1_name} has chosen {player_1_token}")
+      break 
+    else:
+      print(VALID_TOKEN_PROMPT)
+  else:
     print(YES_NO_PROMPT)
 
 
 
 
-if player_1_token == None: 
-  while True: 
-    customize_player_2_token = input(f"{player_2_name}, would you like to choose your token? If not, one will be assigned to you. {YES_NO_PROMPT}")
-    if customize_player_2_name == 'Yes':
-      player_2_token = input("What would you like your token to be? You may choose X or O").capitalize()
-      player_1_token = 'X' if player_2_token == 'O' else 'O'
-      print(f"Great! {player_2_name} has chosen {player_2_token}")
-      break
-    elif customize_player_2_name == 'No':
-      print('No worries! We will choose for you')
-      break
-    else:
-      print(YES_NO_PROMPT)
-else: 
-  player_2_token = 'O' if player_1_token == 'X' else 'X'
+
+
+
 
 player_1 = Player(player_1_name, player_1_token)
 player_2 = Player(player_2_name, player_2_token)

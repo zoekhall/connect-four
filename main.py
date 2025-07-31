@@ -1,5 +1,8 @@
 # ------------------------------- Constants / Repeated Messages ------------------------------- #
 YES_NO_PROMPT = "Please enter Yes or No."
+PLAYER_PROMPT = f"Would you like to choose your name? {YES_NO_PROMPT}"
+NAME_PROMPT = "What would you like your name to be?"
+YES_OR_NO = ["Yes", "No"]
 
 class Player: 
   def __init__(self, name, token):
@@ -60,15 +63,18 @@ print("Welcome to Connect Four! Players will take turns dropping tokens into col
 
 # ------------------------------- Player Set-Up ------------------------------ #
 #set up player 1
+print("Let's set up the first player")
 while True: 
-  customize_player_1_name = input(f"Would the player who is going first like to choose their name? {YES_NO_PROMPT}")
+  ask_player_name_1 = input(PLAYER_PROMPT).capitalize()
+    if ask_player_name_1 in
+    player_1_name = input(NAME_PROMPT) if ask_player_name_1 == 'YES' else "Player 1"
   if customize_player_1_name == 'Yes':
-    player_1_name = input("What would you like your name to be?")
+    player_1_name = input(NAME_PROMPT)
     print(f"Great! The player going first is {player_1_name}")
     break
   elif customize_player_1_name == 'No':
     player_1_name = 'Player 1'
-    print('No worries! You will be known as Player 1')
+    print(f"No worries! You will be known as {player_1_name}")
     break
   else:
     print(YES_NO_PROMPT)

@@ -87,6 +87,7 @@ while True:
     player_2_name = input(NAME_PROMPT) if ask_player_name_2 in VALID_YES else 'Player 2'
     if player_2_name == player_1_name: 
       print("Please enter a unique name")
+      continue
     else:  
       print(f"Great! The player going second is {player_2_name}")
       break
@@ -108,18 +109,21 @@ while True:
 
 #set up player 2 token 
 while True: 
-  ask_player_token_1 = input(f"{player_1_name}, {TOKEN_PROMPT}")
-  if ask_player_token_1 in VALID_NO + VALID_YES:
-    player_1_token = input(f"{player_1_name}, {TYPE_OF_TOKEN_PROMPT}").upper() if ask_player_token_1 in VALID_YES else None
-    if player_1_token in VALID_TOKENS:
-      print(f"Okay, we'll give {player_2_name} the opportunity to choose and then assign a token to you") if player_1_token == None else print(f"Great! {player_1_name} has chosen {player_1_token}")
-      break 
+  if player_1_token == None: #if player 1 did not pick a token 
+    ask_player_token_2 = input(f"{player_2_name}, {TOKEN_PROMPT}") #ask 2 if they would like a token 
+    if ask_player_token_2 in VALID_NO + VALID_YES: #if they answer Yes/No
+      player_2_token = input(f"{player_2_name}, {TYPE_OF_TOKEN_PROMPT}").upper() if ask_player_token_2 in VALID_YES else 'O' #allow them to choose a token if they said yes, if they said no auto set to O
+      player_1_token = 'X' if player_2_token == 'O' else 'O' #set player 1 token as the opposite of player_2_token (since 1 didn't pick a token originally)
+      if player_2_token not in VALID_TOKENS: #make sure player 2 picked a valid token 
+        # print(f"Okay, ${player_1_name}'s token is {player_1_token} and {player_2_name}'s token is {player_2_token}")
+        # break #valid token chosen so loop is broken
+      # else:
+        print(VALID_TOKEN_PROMPT)
     else:
-      print(VALID_TOKEN_PROMPT)
+      print(YES_NO_PROMPT)
   else:
-    print(YES_NO_PROMPT)
-
-
+    player_2_token == 'O' if player_1_token == 'X' else 'X'
+  print(f"Okay, ${player_1_name}'s token is {player_1_token} and {player_2_name}'s token is {player_2_token}")
 
 
 

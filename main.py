@@ -88,18 +88,18 @@ while True:
     print(YES_NO_PROMPT)
 
 #set up player 2
+print("Now - let's set up the second player")
 while True: 
-  customize_player_2_name = input("Alright! To the player going second. Would you like to choose your name? (type Yes or No)")
-  if customize_player_2_name == 'Yes':
-    player_2_name = input("What would you like your name to be?")
+  ask_player_name_2 = input(PLAYER_PROMPT).upper()
+  if ask_player_name_2 in VALID_NO + VALID_YES:
+    player_2_name = input(NAME_PROMPT) if ask_player_name_2 in VALID_YES else 'Player 2'
     print(f"Great! The player going second is {player_2_name}")
     break
-  elif customize_player_2_name == 'No':
-    player_2_name = 'Player 2'
-    print("No worries! You will be known as Player 2")
-    break
-  else:
-    print(YES_NO_PROMPT)  
+  else:   
+    print(YES_NO_ERROR_PROMPT)
+
+
+
 
 if player_1_token == None: 
   while True: 

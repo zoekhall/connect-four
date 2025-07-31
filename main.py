@@ -66,7 +66,7 @@ class ConnectFour:
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
 
 # ------------------------------- Player Set-Up ------------------------------ #
-#set up player 1
+#set up player 1 name
 print("Let's set up the first player")
 while True: 
   ask_player_name_1 = input(PLAYER_PROMPT).upper()
@@ -77,27 +77,18 @@ while True:
   else:   
     print(YES_NO_PROMPT)
 
+#set up player 1 token
 while True: 
   ask_player_token_1 = input(f"{player_1_name}, {TOKEN_PROMPT}")
   if ask_player_token_1 in VALID_NO + VALID_YES:
-
-
-
-    player_1_name = input(NAME_PROMPT) if ask_player_name_1 in VALID_YES else 'Player 1'
-    print(f"Great! The player going first is {player_1_name}")
-    break
-  else:   
-    print(YES_NO_PROMPT)
-
-    player_1_token = input("What would you like your token to be? You may choose X or O")
-    print(f"Great! {player_1_name} has chosen {player_1_token}")
-    break
-  elif customize_player_1_name == 'No':
-    player_1_token = None
-    print('No worries! We will choose for you')
-    break
+    player_1_token = input(f"{player_1_name}, {TOKEN_PROMPT}") if ask_player_token_1 in VALID_YES else None
+    print("Okay, we'll give player 2 the opportunity to choose or one will be assigned to you") if player_1_token == None else print(f"Great! {player_1_name} has chosen {player_1_token}")
+    break 
   else:
     print(YES_NO_PROMPT)
+
+
+  
 
 #set up player 2
 print("Now - let's set up the second player")

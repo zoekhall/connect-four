@@ -5,6 +5,7 @@ NAME_PROMPT = "What would you like your name to be?"
 TOKEN_PROMPT = "Would you like to choose your token? Yes or No"
 TYPE_OF_TOKEN_PROMPT = "What would you like your token to be? You may choose X or O"
 VALID_TOKEN_PROMPT = "Please choose a valid token. Either X or O"
+NUMBER_ERROR = "Please enter a number between 1-"
 
 VALID_YES = ['YES', 'Y', 'TRUE', '1']
 VALID_NO = ['NO', 'N', 'FALSE', '0']
@@ -33,12 +34,12 @@ class ConnectFour:
   #ask for/handle player's input
   def get_player_input(self): 
     while True:
-      colStr = input(f"{self.current_player}, where would you like to place your token? (choose a column #)")
+      colStr = input(f"{self.current_player.name}, where would you like to place your token? (choose a column #)")
       if colStr.isdigit():
         colNum = int(colStr)
-        return colNum - 1 if colNum >= 1 and colNum <= self.cols else print(f"Please enter a number between 1-{self.cols}")
-      else:
-        print(f"Please enter a valid number between 1-{self.cols}")
+        if 1 <= colNum <= self.cols:
+          return colNum - 1
+      print(f"{NUMBER_ERROR}{self.cols}")
 
   #add token to the board
   def drop_token(self, col):

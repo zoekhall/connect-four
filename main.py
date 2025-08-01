@@ -115,22 +115,29 @@ while True:
     print(YES_NO_PROMPT)
 
 #set up player 2 token 
-if player_1_token == None: #if player 1 did not pick a token 
-  ask_player_token_2 = input(f"{player_2_name}, {TOKEN_PROMPT}") #ask 2 if they would like to pick a token 
-while True: 
-  if ask_player_token_2 in VALID_NO + VALID_YES: #if they answer Yes/No
-    player_2.token = input(f"{player_2_name}, {TYPE_OF_TOKEN_PROMPT}").upper() if ask_player_token_2 in VALID_YES else 'O' #allow them to choose a token if they said yes, if they said no auto set to O
-    player_1.token = 'X' if player_2_token == 'O' else 'O' #set player 1 token as the opposite of player_2_token (since 1 didn't pick a token originally)
-    if player_2_token not in VALID_TOKENS: #make sure player 2 picked a valid token 
-      # print(f"Okay, ${player_1_name}'s token is {player_1_token} and {player_2_name}'s token is {player_2_token}")
-      # break #valid token chosen so loop is broken
-    # else:
-      print(VALID_TOKEN_PROMPT)
-  else:
-    print(YES_NO_PROMPT)
-else:
-  player_2_token == 'O' if player_1_token == 'X' else 'X'
-  print(f"Okay, ${player_1_name}'s token is {player_1_token} and {player_2_name}'s token is {player_2_token}")
+print(f"Let's choose {player_2_name}'s token")
+if player_1_token == None: 
+  while True: 
+    ask_player_token_2 = input(f"{player_2_name}, {TOKEN_PROMPT}").upper() #ask if they want to choose a token 
+    if ask_player_token_2 in VALID_YES + VALID_NO: #if they say yes/no
+      if ask_player_token_2 in VALID_YES: #if player 2 wants to choose their token 
+        while True: 
+          player_2_token = input(f"{player_2_name}, {TYPE_OF_TOKEN_PROMPT}").upper() 
+          if player_2_token in VALID_TOKENS:
+            player_1_token = 'O' if player_2_token == 'X' else 'X'
+            break
+          else: 
+            print(VALID_TOKEN_PROMPT)
+      else: #if they don't want to choose their token 
+        player_2_token = "O"
+        player_1_token = "X"
+      break    
+    else: #if they dont answer yes or no
+      print(YES_NO_PROMPT)
+else: 
+  player_2_token = "O" if player_1_token == "X" else "X"     
+
+print(f"Okay, {player_1_name}'s token is {player_1_token} and {player_2_name}'s token is {player_2_token}")
 
 
 

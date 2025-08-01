@@ -125,27 +125,23 @@ if player_1_token == None:
           player_2_token = input(f"{player_2_name}, {TYPE_OF_TOKEN_PROMPT}").upper() 
           if player_2_token in VALID_TOKENS:
             player_1_token = 'O' if player_2_token == 'X' else 'X'
+            print(f"Okay, {player_1_name}'s token is {player_1_token} and {player_2_name}'s token is {player_2_token}")
             break
           else: 
             print(VALID_TOKEN_PROMPT)
       else: #if they don't want to choose their token 
         player_2_token = "O"
         player_1_token = "X"
+        print(f"Okay, {player_1_name}'s token is {player_1_token} and {player_2_name}'s token is {player_2_token}")
       break    
     else: #if they dont answer yes or no
       print(YES_NO_PROMPT)
 else: 
-  player_2_token = "O" if player_1_token == "X" else "X"     
+  player_2_token = "O" if player_1_token == "X" else "X"
+  print(f"Okay, {player_1_name}'s token is {player_1_token} and {player_2_name}'s token is {player_2_token}")
 
-print(f"Okay, {player_1_name}'s token is {player_1_token} and {player_2_name}'s token is {player_2_token}")
-
-
-
-
-
-
-# player_1 = Player(player_1_name, player_1_token)
-# player_2 = Player(player_2_name, player_2_token)
+player_1 = Player(player_1_name, player_1_token)
+player_2 = Player(player_2_name, player_2_token)
 
 # # ------------------------------- Board Set-Up ------------------------------- #
 # print("Alright! Let's set up your board")

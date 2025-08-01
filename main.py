@@ -22,15 +22,13 @@ class ConnectFour:
     self.player_1 = player_1 
     self.player_2 = player_2
     self.current_player = self.player_1 
-    self.current_token = self.player_1.token if self.current_player == self.player_1 else self.player_2.token
     self.game_active = True
-    self.win_combo = self.current_token * 4
   
   def __repr__(self):
     print('   1 2 3 4 5 6 7') #column #s
     for rowIndex, row in enumerate(self.board): #formatted rows
       print(f'{rowIndex}| {' '.join(row)} |') 
-    print(f'+{'-' * (self.columns * 2 + 2)}+') #formatted bottom border 
+    print(f'+{'-' * (self.cols * 2 + 2)}+') #formatted bottom border 
 
   #ask for/handle player's input
   def get_player_input(self): 
@@ -47,22 +45,23 @@ class ConnectFour:
       #find the lowest empty row in the selected column / start from the 'bottom'
       for row_index in range(len(self.board) -1, -1, -1):
         if(self.board[row_index][col] == ' '):
-            self.board[row_index][col] = self.current_token
+            self.board[row_index][col] = self.current_player.token
             return row_index
       return False  
 
   #win detection
   def detect_win(self, row, col):
+    win_combo = self.current_player.token * 4
     horizontal_row = ''.join(self.board[row])
     vertical_col = ''.join([self.board[rowIndex][col] for rowIndex in range(self.rows)])
     asc_diag = ''.join(self.board[rowIndex][(row + col) - rowIndex] for rowIndex in range(self.rows) if 0 <= (row + col) - rowIndex < self.cols)
-    desc_diag = ''.join(self.board[rowIndex][rowIndex - (row - col)] for rowIndex in range(self.current_playerrows) if 0 <= rowIndex - (row - col) < self.cols)
+    desc_diag = ''.join(self.board[rowIndex][rowIndex - (row - col)] for rowIndex in range(self.rows) if 0 <= rowIndex - (row - col) < self.cols)
     
-    return any(self.win_combo in line for line in [horizontal_row, vertical_col, asc_diag, desc_diag])
+    return any(win_combo in line for line in [horizontal_row, vertical_col, asc_diag, desc_diag])
 
   #draw detection
   def detect_draw(self):
-    return all(self.board[0][col] != ' ' for col in range(self.col))
+    return all(self.board[0][col] != ' ' for col in range(self.cols))
 
 #print welcome message
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
@@ -82,9 +81,9 @@ while True:
 #set up player 2 name
 print("Now - let's set up the second player")
 while True: 
-  ask_player_name_2 = input(PLAYER_PROMPT).upper()
-  if ask_player_name_2 in VALID_NO + VALID_YES:
-    player_2_name = input(NAME_PROMPT) if ask_player_name_2 in VALID_YES else 'Player 2'
+  ask_player_name_2 = input(PLAYER_PROMPT).upper() #ask if user wants to customize their name
+  if ask_player_name_2 in VALID_NO + VALID_YES: #if they say yes or no
+    player_2_name = input(NAME_PROMPT) if ask_player_name_2 in VALID_YES else 'Player 2' #if they say yes ask what name - if not 
     if player_2_name == player_1_name: 
       print("Please enter a unique name")
       continue
@@ -95,8 +94,8 @@ while True:
     print(YES_NO_PROMPT)    
 
 #set up player 1 token
+ask_player_token_1 = input(f"{player_1_name}, {TOKEN_PROMPT}")
 while True: 
-  ask_player_token_1 = input(f"{player_1_name}, {TOKEN_PROMPT}")
   if ask_player_token_1 in VALID_NO + VALID_YES:
     player_1_token = input(f"{player_1_name}, {TYPE_OF_TOKEN_PROMPT}").upper() if ask_player_token_1 in VALID_YES else None
     if player_1_token in VALID_TOKENS:
@@ -130,53 +129,53 @@ while True:
 
 
 
-player_1 = Player(player_1_name, player_1_token)
-player_2 = Player(player_2_name, player_2_token)
+# player_1 = Player(player_1_name, player_1_token)
+# player_2 = Player(player_2_name, player_2_token)
 
-# ------------------------------- Board Set-Up ------------------------------- #
-print("Alright! Let's set up your board")
+# # ------------------------------- Board Set-Up ------------------------------- #
+# print("Alright! Let's set up your board")
 
-while True: 
-  customize_board = input(f"Would you like to customize your board? The default is 6 rows/7 columns. {YES_NO_PROMPT}")
-  if customize_board == 'Yes':
-    #row customization 
-    customize_rows = input("Would you like to customize the number of rows? (Y/N)")
-    while True:
-      if customize_rows == 'Yes':
-        row_count = input("How many rows would you like your board to have? You can have between 4-12")
-        if customize_rows < 4 or customize_rows > 12 or customize_rows.digit() == False:
-          print("Please enter a valid number of rows. Any number between 4 - 12")
-        else:
-          print(f"Wonderful! Your board will have {customize_rows} rows")
-          break
-      elif customize_rows == 'No':
-        print("Sounds good! Your board will have 6 rows")
-        break
-      else: 
-        print(YES_NO_PROMPT)
-    # customize_columns = input("Would you like to customize the number of rows? (Y/N)")    
-
-
+# while True: 
+#   customize_board = input(f"Would you like to customize your board? The default is 6 rows/7 columns. {YES_NO_PROMPT}")
+#   if customize_board == 'Yes':
+#     #row customization 
+#     customize_rows = input("Would you like to customize the number of rows? (Y/N)")
+#     while True:
+#       if customize_rows == 'Yes':
+#         row_count = input("How many rows would you like your board to have? You can have between 4-12")
+#         if customize_rows < 4 or customize_rows > 12 or customize_rows.digit() == False:
+#           print("Please enter a valid number of rows. Any number between 4 - 12")
+#         else:
+#           print(f"Wonderful! Your board will have {customize_rows} rows")
+#           break
+#       elif customize_rows == 'No':
+#         print("Sounds good! Your board will have 6 rows")
+#         break
+#       else: 
+#         print(YES_NO_PROMPT)
+#     # customize_columns = input("Would you like to customize the number of rows? (Y/N)")    
 
 
-game = ConnectFour(player_1, player_2)
-
-#game play
-while game_status:
-   #prompt player for input and get valid col #
-   columnIndex = get_player_input()
-   #drop the token once column is assigned a valid int and get row #
-   rowIndex = drop_token(columnIndex)
-
-   print_board()
-
-   set_game_status(rowIndex, columnIndex)
-
-   if not game_status: current_player = player_2 if current_player == player_1 else player_1
 
 
-# def set_game_status(row, col):
-  #   if detect_win(row, col):
+# game = ConnectFour(player_1, player_2)
+
+# #game play
+# while game_status:
+#    #prompt player for input and get valid col #
+#    columnIndex = get_player_input()
+#    #drop the token once column is assigned a valid int and get row #
+#    rowIndex = drop_token(columnIndex)
+
+#    print_board()
+
+#    set_game_status(rowIndex, columnIndex)
+
+#    if not game_status: current_player = player_2 if current_player == player_1 else player_1
+
+
+# # def set_game_status(row, col):
+#   #   if detect_win(row, col):
   #       print('Way to go!')
   #       game_status = False
   #   elif detect_draw():

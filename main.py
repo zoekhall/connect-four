@@ -25,10 +25,10 @@ class ConnectFour:
     self.game_active = True
   
   def __repr__(self):
-    print('   1 2 3 4 5 6 7') #column #s
-    for rowIndex, row in enumerate(self.board): #formatted rows
-      print(f'{rowIndex}| {' '.join(row)} |') 
-    print(f'+{'-' * (self.cols * 2 + 2)}+') #formatted bottom border 
+    header = f"   {' '.join(str(i + 1) for i in range(self.cols))}"
+    rows = '\n'.join(f"{i}| {' '.join(row)} |" for i, row in enumerate(self.board))
+    bottom_border = f"+{'-' * (self.cols * 2 + 2)}+"
+    return f"{header}\n{rows}\n{bottom_border}"
 
   #ask for/handle player's input
   def get_player_input(self): 

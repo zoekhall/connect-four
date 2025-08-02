@@ -45,8 +45,15 @@ def setup_player_name(player_num, other_name=None):
 
 def setup_player_token(default_token, other_token=None):
   response = get_yes_no("Would you like to choose your token?") #ask if want to choose token
-  token = get_token(other_token) if response in VALID_YES else default_token
+  if response in VALID_YES:
+    token = get_token(other_token)
+  else:
+    if default_token == other_token: 
+      token = 'O' if default_token == 'X' else 'X'
+    else:
+      token = default_token   
   print(f"Great! You've chosen the token: {token}.")
+  return token
 
 # ---------------------------------- Classes --------------------------------- #
 class Player: 
@@ -111,78 +118,38 @@ player_1_name = setup_player_name("Player 1")
 print("Now - let's set up the second player")
 player_2_name = setup_player_name("Player 2", player_1_name)
 
-#set up player 1 token
 print(f"Let's choose {player_1_name}'s token")
-while True: 
-  ask_player_token_1 = input(f"{player_1_name}, {TOKEN_PROMPT}").upper() #ask if they want to choose a token 
-  if ask_player_token_1 in VALID_NO + VALID_YES: #if they say yes or no 
-    if ask_player_token_1 in VALID_YES:
-      while True: 
-        player_1_token = input(f"{player_1_name}, {TYPE_OF_TOKEN_PROMPT}").upper() 
-        if player_1_token in VALID_TOKENS:
-          print(f"Great! {player_1_name} has chosen {player_1_token}")
-          break
-        else: 
-          print(VALID_TOKEN_PROMPT)
-    else:
-      player_1_token = None
-      print(f"Okay, we'll give {player_2_name} the opportunity to choose and then assign you a token")
-    break    
-  else:
-    print(YES_NO_PROMPT)
+player_1_token = setup_player_token('X')
 
-#set up player 2 token 
 print(f"Let's choose {player_2_name}'s token")
-if player_1_token == None: 
-  while True: 
-    ask_player_token_2 = input(f"{player_2_name}, {TOKEN_PROMPT}").upper() #ask if they want to choose a token 
-    if ask_player_token_2 in VALID_YES + VALID_NO: #if they say yes/no
-      if ask_player_token_2 in VALID_YES: #if player 2 wants to choose their token 
-        while True: 
-          player_2_token = input(f"{player_2_name}, {TYPE_OF_TOKEN_PROMPT}").upper() 
-          if player_2_token in VALID_TOKENS:
-            player_1_token = 'O' if player_2_token == 'X' else 'X'
-            print(f"Okay, {player_1_name}'s token is {player_1_token} and {player_2_name}'s token is {player_2_token}")
-            break
-          else: 
-            print(VALID_TOKEN_PROMPT)
-      else: #if they don't want to choose their token 
-        player_2_token = "O"
-        player_1_token = "X"
-        print(f"Okay, {player_1_name}'s token is {player_1_token} and {player_2_name}'s token is {player_2_token}")
-      break    
-    else: #if they dont answer yes or no
-      print(YES_NO_PROMPT)
-else: 
-  player_2_token = "O" if player_1_token == "X" else "X"
-  print(f"Okay, {player_1_name}'s token is {player_1_token} and {player_2_name}'s token is {player_2_token}")
+player_2_token = setup_player_token('O', player_1_token)
 
 player_1 = Player(player_1_name, player_1_token)
 player_2 = Player(player_2_name, player_2_token)
 
 # ------------------------------- Board Set-Up ------------------------------- #
-print("Alright! Let's set up your board")
-while True: 
-  customize_board = input(f"Would you like to customize your board? The default is 6 rows/7 columns. {YES_NO_PROMPT}")
-  if customize_board in VALID_YES:
-    #row customization 
-    while True:
-      customize_rows = input(f"Would you like to customize the number of rows? {YES_NO_PROMPT}")
-      if customize_rows in VALID_YES:
-        while True:
-          row_count = input("How many rows would you like your board to have? You can have between 4-12")
-          if row_count.isdigit() and 4 <= int(row_count) <=12: 
-              print(f"Wonderful! Your board will have {int(row_count)} rows")
-              break
-          print(f"{NUMBER_ERROR} 4-12")  
-        break 
-      elif customize_rows in VALID_NO:
-        print("Sounds good! Your board will have 6 rows")
-        break
-  elif customize_board in VALID_NO:
-    print("Using default board size: 6 rows x 7 columns")
-    break 
-  print(YES_NO_PROMPT)   
+# print("Alright! Let's set up your board")
+# while True: 
+#   customize_board = input(f"Would you like to customize your board? The default is 6 rows/7 columns. {YES_NO_PROMPT}")
+#   if customize_board in VALID_YES:
+#     #row customization 
+#     while True:
+#       customize_rows = input(f"Would you like to customize the number of rows? {YES_NO_PROMPT}")
+#       if customize_rows in VALID_YES:
+#         while True:
+#           row_count = input("How many rows would you like your board to have? You can have between 4-12")
+#           if row_count.isdigit() and 4 <= int(row_count) <=12: 
+#               print(f"Wonderful! Your board will have {int(row_count)} rows")
+#               break
+#           print(f"{NUMBER_ERROR} 4-12")  
+#         break 
+#       elif customize_rows in VALID_NO:
+#         print("Sounds good! Your board will have 6 rows")
+#         break
+#   elif customize_board in VALID_NO:
+#     print("Using default board size: 6 rows x 7 columns")
+#     break 
+#   print(YES_NO_PROMPT)   
 
 
 

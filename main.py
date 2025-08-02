@@ -4,14 +4,11 @@ prompts = {
   "NAME_ASK": "Would you like to choose your name?",
   "WHAT_NAME": "What would you like your name to be?",
   "TOKEN_ASK": "Would you like to choose your token?",
- " TYPE_OF_TOKEN": "What would you like your token to be? You may choose X or O.",
-  "VALID_TOKEN": "Please choose a valid token. Either X or O.",
   "NUMBER_ERROR": "Please enter a number between",
 }
 
 VALID_YES = ['YES', 'Y', 'TRUE', '1']
 VALID_NO = ['NO', 'N', 'FALSE', '0']
-VALID_TOKENS = ['X', 'O']
 
 # ----------------------------- Utility Functions ---------------------------- #
 def get_yes_no(prompt):
@@ -20,6 +17,25 @@ def get_yes_no(prompt):
     if response in VALID_YES + VALID_NO:
       return response
     print(prompts["YES_OR_NO"])
+
+def get_token(taken_token=None):
+  while True:
+    token = input(f"What would you like your token to be? Please pick one character that is not a number.").strip().upper()
+    if len(token) != 1:
+      print("Please enter a single character.")
+    elif token.isdigit(): 
+      print("Please don't use a number.")
+    elif token == taken_token:
+      print("That token is already taken. Try another one.")     
+    else:
+      print(f"Great! Your chosen token is {token}")  
+      return token
+
+def check_uniqueness(prompt, comparison_value):
+  while True: 
+    value = input(prompt).strip()
+    if value == comparison_value:
+      print()     
 
 class Player: 
   def __init__(self, name, token):
@@ -77,6 +93,8 @@ class ConnectFour:
 #print welcome message
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
 # --------------------------- Game Setup Functions --------------------------- #
+# def setup_player_name()
+
 # ------------------------------- Player Set-Up ------------------------------ #
 #set up player 1 name
 print("Let's set up the first player")

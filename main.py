@@ -1,10 +1,8 @@
 # ------------------------------- Constants / Repeated Messages ------------------------------- #
 prompts = {
-  "YES_OR_NO": "Please enter Yes or No.",
   "NAME_ASK": "Would you like to choose your name?",
   "WHAT_NAME": "What would you like your name to be?",
   "TOKEN_ASK": "Would you like to choose your token?",
-  "NUMBER_ERROR": "Please enter a number between",
 }
 
 VALID_YES = ['YES', 'Y', 'TRUE', '1']
@@ -16,11 +14,18 @@ def get_yes_no(prompt):
     response = input(prompt).strip().upper()
     if response in VALID_YES + VALID_NO:
       return response
-    print(prompts["YES_OR_NO"])
+    print("Please enter Yes or No.")
 
+def get_name(taken_name=None):
+  while True:
+    name = input("What would you like your name to be?").strip() 
+    if name != taken_name:    
+      print(f"Great! You've chosen the name: {name}")
+    print(f"That name has already been chosen. Please pick a unique name")
+      
 def get_token(taken_token=None):
   while True:
-    token = input(f"What would you like your token to be? Please pick one character that is not a number.").strip().upper()
+    token = input("What would you like your token to be? Please pick one character that is not a number.").strip()
     if len(token) != 1:
       print("Please enter a single character.")
     elif token.isdigit(): 
@@ -29,14 +34,14 @@ def get_token(taken_token=None):
       print("That token is already taken. Try another one.")     
     else:
       print(f"Great! Your chosen token is {token}")  
-      return token
+      return token 
 
-def check_uniqueness(prompt, comparison_value):
-  while True: 
-    value = input(prompt).strip()
-    if value == comparison_value:
-      print()     
-
+def get_number(prompt, min_val, max_val):
+  while True:
+    val = input(prompt).strip()
+    if val.isdigit() and min_val <=int(val) <= max_val: 
+      return int(val)      
+    print()
 class Player: 
   def __init__(self, name, token):
     self.name = name
@@ -98,12 +103,16 @@ print("Welcome to Connect Four! Players will take turns dropping tokens into col
 # ------------------------------- Player Set-Up ------------------------------ #
 #set up player 1 name
 print("Let's set up the first player")
-response = get_yes_no(prompts["NAME_ASK"]) #ask if want to change name 
-player_1_name = input(prompts["WHAT_NAME"]) if response in VALID_YES else 'Player 1' #player_1_name is 'Player 1' if answer is No
+response = get_yes_no("Would you like to choose your name?") #ask if want to change name 
+player_1_name = get_name() if response in VALID_YES else 'Player 1' #if yes, get_name() - else assigned 'Player 1'
 print(f"Great! You've chosen the name: {player_1_name}")
   
 #set up player 2 name
 print("Now - let's set up the second player")
+response = get_yes_no("Would you like to choose your name?") 
+
+
+
 while True: 
   ask_player_name_2 = input(prompts["NAME_ASK"]).upper() #ask if user wants to choose their name
   if ask_player_name_2 in VALID_NO + VALID_YES: #if they say yes or no

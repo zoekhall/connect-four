@@ -76,19 +76,14 @@ class ConnectFour:
 
 #print welcome message
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
-
+# --------------------------- Game Setup Functions --------------------------- #
 # ------------------------------- Player Set-Up ------------------------------ #
 #set up player 1 name
 print("Let's set up the first player")
-while True: 
-  ask_player_name_1 = input(prompts["NAME_ASK"]).upper()
-  if ask_player_name_1 in VALID_NO + VALID_YES:
-    player_1_name = input(prompts["WHAT_NAME"]) if ask_player_name_1 in VALID_YES else 'Player 1'
-    print(f"Great! The player going first is {player_1_name}")
-    break
-  else:   
-    print(prompts["YES_NO_PROMPT"])
-    
+response = get_yes_no(prompts["NAME_ASK"]) #ask if want to change name 
+player_1_name = input(prompts["WHAT_NAME"]) if response in VALID_YES else 'Player 1' #player_1_name is 'Player 1' if answer is No
+print(f"Great! You've chosen the name: {player_1_name}")
+  
 #set up player 2 name
 print("Now - let's set up the second player")
 while True: 

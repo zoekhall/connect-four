@@ -1,16 +1,17 @@
 # ------------------------------- Constants / Repeated Messages ------------------------------- #
-YES_NO_PROMPT = "Please enter Yes or No"
-PLAYER_PROMPT = "Would you like to choose your name? Yes or No"
-NAME_PROMPT = "What would you like your name to be?"
-TOKEN_PROMPT = "Would you like to choose your token? Yes or No"
-TYPE_OF_TOKEN_PROMPT = "What would you like your token to be? You may choose X or O"
-VALID_TOKEN_PROMPT = "Please choose a valid token. Either X or O"
-NUMBER_ERROR = "Please enter a number between"
+prompts = {
+  "YES_OR_NO": "Please enter Yes or No",
+  "PLAYER_ASK": "Would you like to choose your name? Yes or No",
+  "NAME_ASK": "What would you like your name to be?",
+  "TOKEN_ASK": "Would you like to choose your token? Yes or No",
+ " TYPE_OF_TOKEN": "What would you like your token to be? You may choose X or O",
+  "VALID_TOKEN": "Please choose a valid token. Either X or O",
+  "NUMBER_ERROR": "Please enter a number between",
+}
 
 VALID_YES = ['YES', 'Y', 'TRUE', '1']
 VALID_NO = ['NO', 'N', 'FALSE', '0']
 VALID_TOKENS = ['X', 'O']
-
 class Player: 
   def __init__(self, name, token):
     self.name = name
@@ -151,13 +152,12 @@ while True:
   if customize_board in VALID_YES:
     #row customization 
     while True:
-      customize_rows = input("Would you like to customize the number of rows? (Yes/No)")
+      customize_rows = input(f"Would you like to customize the number of rows? {YES_NO_PROMPT}")
       if customize_rows in VALID_YES:
         while True:
           row_count = input("How many rows would you like your board to have? You can have between 4-12")
-          if row_count.isdigit(): 
-            if 4 <= int(row_count) <=12: 
-              print(f"Wonderful! Your board will have {row_count} rows")
+          if row_count.isdigit() and 4 <= int(row_count) <=12: 
+              print(f"Wonderful! Your board will have {int(row_count)} rows")
               break
           print(f"{NUMBER_ERROR} 4-12")  
         break 

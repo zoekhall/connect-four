@@ -1,17 +1,26 @@
 # ------------------------------- Constants / Repeated Messages ------------------------------- #
 prompts = {
-  "YES_OR_NO": "Please enter Yes or No",
-  "PLAYER_ASK": "Would you like to choose your name? Yes or No",
-  "NAME_ASK": "What would you like your name to be?",
-  "TOKEN_ASK": "Would you like to choose your token? Yes or No",
- " TYPE_OF_TOKEN": "What would you like your token to be? You may choose X or O",
-  "VALID_TOKEN": "Please choose a valid token. Either X or O",
+  "YES_OR_NO": "Please enter Yes or No.",
+  "NAME_ASK": "Would you like to choose your name?",
+  "WHAT_NAME": "What would you like your name to be?",
+  "TOKEN_ASK": "Would you like to choose your token?",
+ " TYPE_OF_TOKEN": "What would you like your token to be? You may choose X or O.",
+  "VALID_TOKEN": "Please choose a valid token. Either X or O.",
   "NUMBER_ERROR": "Please enter a number between",
 }
 
 VALID_YES = ['YES', 'Y', 'TRUE', '1']
 VALID_NO = ['NO', 'N', 'FALSE', '0']
 VALID_TOKENS = ['X', 'O']
+
+# ----------------------------- Utility Functions ---------------------------- #
+def get_yes_no(prompt):
+  while True: 
+    response = input(prompt).strip().upper()
+    if response in VALID_YES + VALID_NO:
+      return response
+    print(prompts["YES_OR_NO"])
+
 class Player: 
   def __init__(self, name, token):
     self.name = name
@@ -40,7 +49,7 @@ class ConnectFour:
         colNum = int(colStr)
         if 1 <= colNum <= self.cols:
           return colNum - 1
-      print(f"{NUMBER_ERROR} 1-{self.cols}")
+      print(f"{prompts.NUMBER_ERROR} 1-{self.cols}")
 
   #add token to the board
   def drop_token(self, col):
@@ -72,21 +81,21 @@ print("Welcome to Connect Four! Players will take turns dropping tokens into col
 #set up player 1 name
 print("Let's set up the first player")
 while True: 
-  ask_player_name_1 = input(PLAYER_PROMPT).upper()
+  ask_player_name_1 = input(prompts["NAME_ASK"]).upper()
   if ask_player_name_1 in VALID_NO + VALID_YES:
-    player_1_name = input(NAME_PROMPT) if ask_player_name_1 in VALID_YES else 'Player 1'
+    player_1_name = input(prompts["WHAT_NAME"]) if ask_player_name_1 in VALID_YES else 'Player 1'
     print(f"Great! The player going first is {player_1_name}")
     break
   else:   
-    print(YES_NO_PROMPT)
+    print(prompts["YES_NO_PROMPT"])
     
 #set up player 2 name
 print("Now - let's set up the second player")
 while True: 
-  ask_player_name_2 = input(PLAYER_PROMPT).upper() #ask if user wants to customize their name
+  ask_player_name_2 = input(prompts["NAME_ASK"]).upper() #ask if user wants to choose their name
   if ask_player_name_2 in VALID_NO + VALID_YES: #if they say yes or no
     while True:
-      player_2_name = input(NAME_PROMPT) if ask_player_name_2 in VALID_YES else 'Player 2' #if they say yes ask what name - if not 
+      player_2_name = input(prompts["WHAT_NAME"]) if ask_player_name_2 in VALID_YES else 'Player 2' #if they say yes ask what name - if not 
       if player_2_name == player_1_name: 
         print("Please enter a unique name")
       else:  
@@ -94,7 +103,7 @@ while True:
         break
     break
   else:   
-    print(YES_NO_PROMPT)    
+    print(prompts["YES_NO_PROMPT"])  
 
 #set up player 1 token
 print(f"Let's choose {player_1_name}'s token")

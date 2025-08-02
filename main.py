@@ -1,10 +1,4 @@
-# ------------------------------- Constants / Repeated Messages ------------------------------- #
-prompts = {
-  "NAME_ASK": "Would you like to choose your name?",
-  "WHAT_NAME": "What would you like your name to be?",
-  "TOKEN_ASK": "Would you like to choose your token?",
-}
-
+# ------------------------------- Constants ------------------------------- #
 VALID_YES = ['YES', 'Y', 'TRUE', '1']
 VALID_NO = ['NO', 'N', 'FALSE', '0']
 
@@ -20,8 +14,8 @@ def get_name(taken_name=None):
   while True:
     name = input("What would you like your name to be?").strip() 
     if name != taken_name:    
-      print(f"Great! You've chosen the name: {name}")
-    print(f"That name has already been chosen. Please pick a unique name")
+      return name
+    print(f"That name has already been chosen. Please pick a unique name.")
       
 def get_token(taken_token=None):
   while True:
@@ -33,7 +27,6 @@ def get_token(taken_token=None):
     elif token == taken_token:
       print("That token is already taken. Try another one.")     
     else:
-      print(f"Great! Your chosen token is {token}")  
       return token 
 
 def get_number(prompt, min_val, max_val):
@@ -42,6 +35,20 @@ def get_number(prompt, min_val, max_val):
     if val.isdigit() and min_val <=int(val) <= max_val: 
       return int(val)      
     print()
+
+# --------------------------- Game Setup Functions --------------------------- #
+def setup_player_name(player_num, other_name=None):
+  response = get_yes_no("Would you like to choose your name?") #ask if want to change name 
+  player_name = get_name(other_name) if response in VALID_YES else player_num #if yes, get_name(and compare other_name) - else assigned the player #
+  print(f"Great! You've chosen the name: {player_name}.")
+  return player_name
+
+def setup_player_token(default_token, other_token=None):
+  response = get_yes_no("Would you like to choose your token?") #ask if want to choose token
+  token = get_token(other_token) if response in VALID_YES else default_token
+  print(f"Great! You've chosen the token: {token}.")
+
+# ---------------------------------- Classes --------------------------------- #
 class Player: 
   def __init__(self, name, token):
     self.name = name
@@ -94,14 +101,6 @@ class ConnectFour:
   #draw detection
   def detect_draw(self):
     return all(self.board[0][col] != ' ' for col in range(self.cols))
-
-#print welcome message
-# --------------------------- Game Setup Functions --------------------------- #
-def setup_player_name(player_num, other_name=None):
-  response = get_yes_no("Would you like to choose your name?") #ask if want to change name 
-  player_name = get_name(other_name) if response in VALID_YES else player_num #if yes, get_name(and compare other_name) - else assigned the player #
-  print(f"Great! You've chosen the name: {player_name}")
-  return player_name
 
 # ------------------------------- Player Set-Up ------------------------------ #
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")

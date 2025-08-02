@@ -34,7 +34,7 @@ def get_number(prompt, min_val, max_val):
     val = input(prompt).strip()
     if val.isdigit() and min_val <=int(val) <= max_val: 
       return int(val)      
-    print()
+    print(f"Please pick a valid number between {min_val} and {max_val}.")
 
 # --------------------------- Game Setup Functions --------------------------- #
 def setup_player_name(player_num, other_name=None):

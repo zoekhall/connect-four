@@ -96,36 +96,21 @@ class ConnectFour:
     return all(self.board[0][col] != ' ' for col in range(self.cols))
 
 #print welcome message
-print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
 # --------------------------- Game Setup Functions --------------------------- #
-# def setup_player_name()
+def setup_player_name(player_num, other_name=None):
+  response = get_yes_no("Would you like to choose your name?") #ask if want to change name 
+  player_name = get_name(other_name) if response in VALID_YES else player_num #if yes, get_name(and compare other_name) - else assigned the player #
+  print(f"Great! You've chosen the name: {player_name}")
+  return player_name
 
 # ------------------------------- Player Set-Up ------------------------------ #
-#set up player 1 name
+print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
+
 print("Let's set up the first player")
-response = get_yes_no("Would you like to choose your name?") #ask if want to change name 
-player_1_name = get_name() if response in VALID_YES else 'Player 1' #if yes, get_name() - else assigned 'Player 1'
-print(f"Great! You've chosen the name: {player_1_name}")
-  
-#set up player 2 name
+player_1_name = setup_player_name("Player 1")
+
 print("Now - let's set up the second player")
-response = get_yes_no("Would you like to choose your name?") 
-
-
-
-while True: 
-  ask_player_name_2 = input(prompts["NAME_ASK"]).upper() #ask if user wants to choose their name
-  if ask_player_name_2 in VALID_NO + VALID_YES: #if they say yes or no
-    while True:
-      player_2_name = input(prompts["WHAT_NAME"]) if ask_player_name_2 in VALID_YES else 'Player 2' #if they say yes ask what name - if not 
-      if player_2_name == player_1_name: 
-        print("Please enter a unique name")
-      else:  
-        print(f"Great! The player going second is {player_2_name}")
-        break
-    break
-  else:   
-    print(prompts["YES_NO_PROMPT"])  
+player_2_name = setup_player_name("Player 2", player_1_name)
 
 #set up player 1 token
 print(f"Let's choose {player_1_name}'s token")

@@ -1,7 +1,7 @@
 # ------------------------------- Constants ------------------------------- #
-VALID_YES = ['YES', 'Y', 'TRUE', '1']
-VALID_NO = ['NO', 'N', 'FALSE', '0']
-VALID_YES_NO = VALID_YES + VALID_NO
+VALID_YES = {'YES', 'Y', 'TRUE', '1'}
+VALID_NO = {'NO', 'N', 'FALSE', '0'}
+VALID_YES_NO = VALID_YES | VALID_NO
 DEFAULT_TOKENS = ['X', 'O', '@', '#', '*']
 ROWS = {
   'name': 'rows',
@@ -100,6 +100,8 @@ def customize_players(player_1, player_2):
   player_2.token = set_token(f"Would you like to change {player_2.name}'s token? ", player_2.token, player_1.token)
 
 # ---------------------------------- Classes --------------------------------- #
+class RestartGame(Exception):
+  pass
 class Player: 
   def __init__(self, name, token):
     self.name = name
@@ -124,10 +126,12 @@ class ConnectFour:
   #ask for/handle player's input
   def get_player_input(self): 
     while True:
-      colStr = input(f"{self.current_player.name}, where would you like to place your token? (choose a column #) ")
-      if colStr.isdigit():
-        if 1 <= int(colStr) <= self.cols:
-          return int(colStr) - 1
+      col_str = input(f"{self.current_player.name}, where would you like to place your token? (choose a column #) ")
+      if col_str.isdigit():
+        if 1 <= int(col_str) <= self.cols:
+          return int(col_str) - 1
+      elif col_str.upper() == 'RESTART':
+        raise RestartGame  
       print(f"Please enter a number between 1-{self.cols}. ")
 
   #add token to the board
@@ -161,18 +165,23 @@ class ConnectFour:
 
   #game play
   def play(self):
-    while self.game_active:
-      print(self)
-      col, row = self.get_player_input(), self.drop_token(col)
-      if row is False:
-        print("Whoops! That column is full. Please pick another column. ")
-        continue 
-      
-      self.detect_win(col, row)
-      self.detect_draw()
+    try:
+      while self.game_active:
+        print(self)
+        col, row = self.get_player_input(), self.drop_token(col)
+        if row is False:
+          print("Whoops! That column is full. Please pick another column. ")
+          continue 
+        
+        self.detect_win(col, row)
+        self.detect_draw()
 
-      if self.game_active:
-        self.switch_players()
+        if self.game_active:
+          self.switch_players()
+    except RestartGame: 
+      print("🔄 Game is restarting...")
+      self.game_active = False
+      raise     
 
 # ------------------------------- Initial Set-Up ------------------------------ #
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
@@ -189,7 +198,11 @@ def game_play():
   while True:
     game = ConnectFour(player_1, player_2, rows, cols)
     game.current_player = set_who_goes_first(player_1, player_2)
-    game.play() 
+    try:
+      game.play() 
+    except RestartGame:
+      continue
+
     if yes("Do you want to play again? "):
       if yes("Do you want to change player information/board size? "):
         if yes("Would you like to change player information? "):
@@ -198,6 +211,7 @@ def game_play():
           rows, cols = set_up_board()
     else:
       print("Thanks for playing!")
+      break
 
 if __name__ == "__main__":
   game_play()      

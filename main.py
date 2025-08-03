@@ -114,9 +114,8 @@ class ConnectFour:
     while True:
       colStr = input(f"{self.current_player.name}, where would you like to place your token? (choose a column #) ")
       if colStr.isdigit():
-        colNum = int(colStr)
-        if 1 <= colNum <= self.cols:
-          return colNum - 1
+        if 1 <= int(colStr) <= self.cols:
+          return int(colStr) - 1
       print(f"Please enter a number between 1-{self.cols}. ")
 
   #add token to the board
@@ -133,22 +132,19 @@ class ConnectFour:
 
   #win detection
   def detect_win(self, row, col):
-    win_combo = self.current_player.token * 4
     horizontal_row = ''.join(self.board[row])
     vertical_col = ''.join([self.board[rowIndex][col] for rowIndex in range(self.rows)])
     asc_diag = ''.join(self.board[rowIndex][(row + col) - rowIndex] for rowIndex in range(self.rows) if 0 <= (row + col) - rowIndex < self.cols)
     desc_diag = ''.join(self.board[rowIndex][rowIndex - (row - col)] for rowIndex in range(self.rows) if 0 <= rowIndex - (row - col) < self.cols)
     
-    if any(win_combo in line for line in [horizontal_row, vertical_col, asc_diag, desc_diag]):
-      print(self)
-      print(f"{self.current_player.name} wins! 🎉")
+    if any((self.current_player.token * 4) in line for line in [horizontal_row, vertical_col, asc_diag, desc_diag]):
+      print(f"{self}\n{'*' * (self.cols * 2 + 2)}\n{self.current_player.name} wins! 🎉")
       self.game_active = False
 
   #draw detection
   def detect_draw(self):
     if all(self.board[0][col] != ' ' for col in range(self.cols)):
-      print(self)
-      print("There are no losers here. It's a draw! 🤝")
+      print(f"{self}\n{'*' * (self.cols * 2 + 2)}\nThere are no losers here. It's a draw! 🤝")
       self.game_active = False
 
   #customize player/board

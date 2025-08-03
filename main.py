@@ -131,6 +131,7 @@ class ConnectFour:
   #draw detection
   def detect_draw(self):
     return all(self.board[0][col] != ' ' for col in range(self.cols))
+  
 
 # ------------------------------- Player Set-Up ------------------------------ #
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")

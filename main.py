@@ -59,10 +59,7 @@ def setup_row_or_col(type):
     return type['default']  
   
 def setup_player_name(player_num, other_name=None):
-  if get_yes_no("Would you like to choose your name?") in VALID_YES:
-    player_name = get_name(other_name) 
-  else: 
-    player_name = player_num #if yes, get_name(and compare other_name) - else assigned the player #
+  player_name = get_name(other_name) if get_yes_no("Would you like to choose your name?") in VALID_YES else player_num
   print(f"Great! You've chosen the name: {player_name}.")
   return player_name
 

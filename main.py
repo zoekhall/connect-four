@@ -149,10 +149,12 @@ class ConnectFour:
       if row == False:
         print("Whoops! That column is full. Please pick another column.")
         continue 
-      else:
-        self.detect_win(row, col)
-        if self.game_active:
-          self.detect_draw()
+      
+      self.detect_win(row, col)
+      self.detect_draw()
+
+      if self.game_active:
+        self.switch_players()
     # print("Game over. Thanks for playing! Would you like to play again?")
 
 

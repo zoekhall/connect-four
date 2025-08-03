@@ -51,9 +51,8 @@ def get_number(prompt, min_val, max_val):
     print(f"Please pick a valid number between {min_val} and {max_val}. ")
 
 # --------------------------- Game Set_up Functions --------------------------- #  
-def set_up_player_name(player_num, other_name=None):
-  player_name = get_name(other_name) if get_yes_no("Would you like to choose your name? ") in VALID_YES else player_num
-  print(f"Great! You've chosen the name: {player_name}. ")
+def set_up_player_name(prompt, player, other_name=None):
+  player_name = get_name(other_name) if get_yes_no(prompt) in VALID_YES else player
   return player_name
 
 def set_up_player_token(default_token, other_token=None):
@@ -65,12 +64,16 @@ def set_up_player_token(default_token, other_token=None):
       token = 'O' if default_token == 'X' else 'X'
     else:
       token = default_token   
-  print(f"Great! You've chosen the token: {token}. ")
   return token
 
-def set_up_player(name, default_token, other_name=None, other_token=None):
-  print(f"Let's set up {name}.")
-  name, token = set_up_player_name(name, other_name), set_up_player_token(default_token, other_token)
+def set_up_player(player_num, default_token, other_name=None, other_token=None):
+  print(f"Let's set up {player_num}.")
+
+  name = set_up_player_name("Would you like to choose your name? ", player_num, other_name)
+  print(f"Great! You've chosen the name: {name}. ")
+
+  token = set_up_player_token(default_token, other_token)
+  print(f"Great! You've chosen the token: {token}. ")
   return Player(name, token)
 
 def set_who_goes_first(player_1, player_2):
@@ -161,7 +164,17 @@ class ConnectFour:
       print(self)
       print("There are no losers here. It's a draw! 🤝")
       self.game_active = False
-  
+
+  #customize player/board
+  def customize_name(self, player_num):
+    name = player_num.name
+    player_name = set_up_player_name(f"Would you like to change {name}? ", name, self.player_2.name)
+    if player_name == name:
+      print(f"Okay! We'll keep your name as {name}")
+    else:
+      self.player_num.name = player_name
+      print(f"Okay! We've changed your name and it is now {player_name}")  
+
   #game play
   def play(self):
     while self.game_active:
@@ -179,8 +192,22 @@ class ConnectFour:
         self.switch_players()
 
       if not self.game_active:
-        response = get_yes_no("Do you want to play again?")  
-    print("Game over. Thanks for playing! Would you like to play again?")
+        response = get_yes_no("Do you want to play again? ")
+        if response in VALID_YES:
+          customize_response = ("Do you want to change player information or board size? ")
+          if customize_response in VALID_YES:
+            player_response = input("Would you like to change player information? ")
+            if player_response in VALID_YES:
+              self.customize_name(self.player_1)
+              self.customize_name(self.player_2)
+            board_response = input("Would you like to change the board? ")
+            if board_response in VALID_YES:
+              set_up_row_or_col(ROWS)
+              set_up_row_or_col(COLS)
+          game_play()    
+        else:
+          print("Thanks for playing!")
+
 
 # ------------------------------- Set-Up ------------------------------ #
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")

@@ -50,6 +50,14 @@ def get_number(prompt, min_val, max_val):
     print(f"Please pick a valid number between {min_val} and {max_val}.")
 
 # --------------------------- Game Setup Functions --------------------------- #
+def setup_row_or_col(type):
+  response = get_yes_no(f"Would you like to change the # of {type['name']}? (default = {type['default']})")
+  if response in VALID_YES:
+    return get_number(f"How many {type['name']} would you like? (min = {type['min']}, max = {type['max']})", type['min'], type['max'])  
+  else:
+    print(f"Okay! We'll set the # of {type['name']} to {type['default']}.")
+    return type['default']  
+  
 def setup_player_name(player_num, other_name=None):
   if get_yes_no("Would you like to choose your name?") in VALID_YES:
     player_name = get_name(other_name) 
@@ -70,13 +78,9 @@ def setup_player_token(default_token, other_token=None):
   print(f"Great! You've chosen the token: {token}.")
   return token
 
-def setup_row_or_col(type):
-  response = get_yes_no(f"Would you like to change the # of {type['name']}? (default = {type['default']})")
-  if response in VALID_YES:
-    return get_number(f"How many {type['name']} would you like? (min = {type['min']}, max = {type['max']})", type['min'], type['max'])  
-  else:
-    print(f"Okay! We'll set the # of {type['name']} to {type['default']}.")
-    return type['default']  
+def setup_player(name, default_token, other_name=None, other_token=None):
+  name, token = setup_player_name(name, other_name), setup_player_token(default_token, other_token)
+  return Player(name, token)
 
 # ---------------------------------- Classes --------------------------------- #
 class Player: 
@@ -157,35 +161,22 @@ class ConnectFour:
         self.switch_players()
     # print("Game over. Thanks for playing! Would you like to play again?")
 
-
-
 # ------------------------------- Player Set-Up ------------------------------ #
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
 
 print("Let's set up the first player.")
-player_1_name = setup_player_name("Player 1")
+player_1 = setup_player('Player 1', 'X')
 
 print("Now - let's set up the second player.")
-player_2_name = setup_player_name("Player 2", player_1_name)
-
-print(f"Let's choose {player_1_name}'s token")
-player_1_token = setup_player_token('X')
-
-print(f"Let's choose {player_2_name}'s token")
-player_2_token = setup_player_token('O', player_1_token)
-
-player_1 = Player(name=player_1_name, token=player_1_token)
-player_2 = Player(name=player_2_name, token=player_2_token)
+player_2 = setup_player('Player 2', 'O', other_name = player_1.name, other_token= player_1.token)
 
 # ------------------------------- Board Set-Up ------------------------------- #
 print("Alright! Let's set up your board.")
 response = get_yes_no("Would you like to customize your board?") #ask if want to customize board
 if response in VALID_YES:
-  rows = setup_row_or_col(ROWS)
-  cols = setup_row_or_col(COLS)  
+  rows, cols = setup_row_or_col(ROWS), setup_row_or_col(COLS)  
 else:
-  rows = ROWS['default']
-  cols = COLS['default']
+  rows, cols = ROWS['default'], COLS['default']
 
 print(f"Okay, we'll now create your gameboard with {rows} rows and {cols} columns.")
 game = ConnectFour(player_1, player_2, rows, cols)

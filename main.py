@@ -20,7 +20,7 @@ COLS = {
 def get_yes_no(prompt):
   while True: 
     response = input(prompt).strip().upper()
-    if input(prompt).strip().upper() in VALID_YES_NO:
+    if response in VALID_YES_NO:
       return response
     print("Please enter Yes or No. ")
 
@@ -161,21 +161,6 @@ class ConnectFour:
 
       if self.game_active:
         self.switch_players()
-      else:  
-        if get_yes_no("Do you want to play again? ") in VALID_YES:
-          if get_yes_no("Do you want to change player information/board size? ") in VALID_YES:
-            if get_yes_no("Would you like to change player information? ") in VALID_YES:
-              self.player_1.name = set_name(f"Would you like to change the name of {self.player_1.name}? ", self.player_1.name, self.player_2.name)
-              self.player_1.token = set_token(f"Would you like to change {self.player_1.name}'s token? ", self.player_1.token, self.player_2.token)
-              self.player_2.name = set_name(f"Would you like to change the name of {self.player_2.name}? ", self.player_2.name, self.player_1.name)
-              self.player_2.token = set_token(f"Would you like to change {self.player_2.name}'s token? ", self.player_2.token, self.player_1.token)
-            if get_yes_no("Would you like to customize the board? ") in VALID_YES:
-              self.rows = set_up_row_or_col(ROWS)
-              self.cols = set_up_row_or_col(COLS)
-          game_play()    
-        else:
-          print("Thanks for playing!")
-
 
 # ------------------------------- Set-Up ------------------------------ #
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
@@ -190,4 +175,19 @@ def game_play():
   while True:
     game = ConnectFour(player_1, player_2, rows, cols)
     game.current_player = set_who_goes_first(player_1, player_2)
-    game.play()
+    game.play() 
+    if get_yes_no("Do you want to play again? ") in VALID_YES:
+      if get_yes_no("Do you want to change player information/board size? ") in VALID_YES:
+        if get_yes_no("Would you like to change player information? ") in VALID_YES:
+          player_1.name = set_name(f"Would you like to change the name of {player_1.name}? ", player_1.name, player_2.name)
+          player_1.token = set_token(f"Would you like to change {player_1.name}'s token? ", player_1.token, player_2.token)
+          player_2.name = set_name(f"Would you like to change the name of {player_2.name}? ", player_2.name, player_1.name)
+          player_2.token = set_token(f"Would you like to change {player_2.name}'s token? ", player_2.token, player_1.token)
+        if get_yes_no("Would you like to customize the board? ") in VALID_YES:
+          rows = set_up_row_or_col(ROWS)
+          cols = set_up_row_or_col(COLS)
+    else:
+      print("Thanks for playing!")
+
+if __name__ == "__main__":
+  game_play()      

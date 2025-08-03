@@ -68,13 +68,13 @@ def setup_player_token(default_token, other_token=None):
   print(f"Great! You've chosen the token: {token}.")
   return token
 
-def setup_board(type):
-  response = get_yes_no("Would you like to customize your board?") #ask if want to customize board
+def setup_row_or_col(type):
+  response = get_yes_no(f"Would you like to change the # of {type.lower()}? (default = {type['default']})")
   if response in VALID_YES:
-    row_response = get_yes_no(f"Would you like to change the # of {type}? (default = {type['default']})")
-    if response in VALID_YES:
-      rows = get_number(f"How many rows would you like? (min = {ROWS["min"]}, max = {COLS["max"]})")
-  
+    return get_number(f"How many {type.lower()} would you like? (min = {type['min']}, max = {type['max']})")  
+  else:
+    print(f"Okay! We'll set the # of {type.lower()} to {type['default']}.")
+    return type['default']  
 
 # ---------------------------------- Classes --------------------------------- #
 class Player: 
@@ -150,29 +150,14 @@ player_2 = Player(name=player_2_name, token=player_2_token)
 
 # ------------------------------- Board Set-Up ------------------------------- #
 print("Alright! Let's set up your board.")
+response = get_yes_no("Would you like to customize your board?") #ask if want to customize board
+if response in VALID_YES:
+  
 
+rows =
+cols = 
+game = ConnectFour(player_1, player_2, rows, cols)
 
-# while True: 
-#   customize_board = input(f"Would you like to customize your board? The default is 6 rows/7 columns. {YES_NO_PROMPT}")
-#   if customize_board in VALID_YES:
-#     #row customization 
-#     while True:
-#       customize_rows = input(f"Would you like to customize the number of rows? {YES_NO_PROMPT}")
-#       if customize_rows in VALID_YES:
-#         while True:
-#           row_count = input("How many rows would you like your board to have? You can have between 4-12")
-#           if row_count.isdigit() and 4 <= int(row_count) <=12: 
-#               print(f"Wonderful! Your board will have {int(row_count)} rows")
-#               break
-#           print(f"{NUMBER_ERROR} 4-12")  
-#         break 
-#       elif customize_rows in VALID_NO:
-#         print("Sounds good! Your board will have 6 rows")
-#         break
-#   elif customize_board in VALID_NO:
-#     print("Using default board size: 6 rows x 7 columns")
-#     break 
-#   print(YES_NO_PROMPT)   
 
 
 

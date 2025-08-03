@@ -20,7 +20,7 @@ COLS = {
 def get_yes_no(prompt):
   while True: 
     response = input(prompt).strip().upper()
-    if response in (VALID_YES_NO):
+    if response in VALID_YES_NO:
       return response
     print("Please enter Yes or No. ")
 
@@ -38,7 +38,7 @@ def get_token(taken_token=None):
       print("Please enter a single character. ")
     elif token.isdigit(): 
       print("Please don't use a number. ")
-    elif token == taken_token:
+    elif token ==s taken_token:
       print("That token is already taken. Try another one. ")     
     else:
       return token 
@@ -69,7 +69,7 @@ def setup_player_token(default_token, other_token=None):
   if response in VALID_YES:
     token = get_token(other_token)
   else:
-    if default_token == other_token: 
+    if default_token is other_token: 
       token = 'O' if default_token == 'X' else 'X'
     else:
       token = default_token   
@@ -83,7 +83,10 @@ def setup_player(name, default_token, other_name=None, other_token=None):
 def set_who_goes_first(player_1, player_2):
   while True: 
     response = input(f"Who'd like to go first? {player_1.name} or {player_2.name}?").strip()
-    player_1 if response == player_1.name else player_2
+    if response == player_1.name:
+      return player_1
+    elif response == player_2.name:
+      return player_2
     print("Please enter a valid player name. ")
 
 # ---------------------------------- Classes --------------------------------- #
@@ -128,7 +131,7 @@ class ConnectFour:
   
   #switch players
   def switch_players(self):
-    self.current_player = self.player_2 if self.current_player == self.player_1 else self.player_1
+    self.current_player = self.player_2 if self.current_player is self.player_1 else self.player_1
 
   #win detection
   def detect_win(self, row, col):
@@ -156,7 +159,7 @@ class ConnectFour:
       print(self)
       col = self.get_player_input() #pick column #
       row = self.drop_token(col) #drop token into column 
-      if row == False:
+      if row is False:
         print("Whoops! That column is full. Please pick another column. ")
         continue 
       

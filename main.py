@@ -3,14 +3,14 @@ VALID_YES = ['YES', 'Y', 'TRUE', '1']
 VALID_NO = ['NO', 'N', 'FALSE', '0']
 DEFAULT_TOKENS = ['X', 'O', '@', '#', '*']
 ROWS = {
-  "default": 6, 
-  "min": 4,
-  "max": 10
+  'default': 6, 
+  'min': 4,
+  'max': 10
 }
 COLS = {
-  "default": 7, 
-  "min": 4,
-  "max": 12
+  'default': 7, 
+  'min': 4,
+  'max': 12
 }
 
 # ----------------------------- Utility Functions ---------------------------- #
@@ -68,12 +68,12 @@ def setup_player_token(default_token, other_token=None):
   print(f"Great! You've chosen the token: {token}.")
   return token
 
-def setup_board(type, default, max):
+def setup_board(type):
   response = get_yes_no("Would you like to customize your board?") #ask if want to customize board
   if response in VALID_YES:
-    row_response = get_yes_no(f"Would you like to change the # of {type}? (default = {default})")
+    row_response = get_yes_no(f"Would you like to change the # of {type}? (default = {type['default']})")
     if response in VALID_YES:
-      rows = get_number("How many rows would you like? (min = 4, max = 10)")
+      rows = get_number(f"How many rows would you like? (min = {ROWS["min"]}, max = {COLS["max"]})")
   
 
 # ---------------------------------- Classes --------------------------------- #

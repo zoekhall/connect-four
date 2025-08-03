@@ -117,6 +117,10 @@ class ConnectFour:
             self.board[row_index][col] = self.current_player.token
             return row_index
       return False  
+  
+  #switch players
+  def switch_players(self):
+    self.current_player = self.player_2 if self.current_player == self.player_1 else self.player_1
 
   #win detection
   def detect_win(self, row, col):
@@ -134,10 +138,24 @@ class ConnectFour:
   def detect_draw(self):
     if all(self.board[0][col] != ' ' for col in range(self.cols)):
       print("There are no losers here. It's a draw! 🤝")
+      self.game_active = False
   
   #game play
   def play(self):
     while self.game_active:
+      print(self)
+      col = self.get_player_input() #pick column #
+      row = self.drop_token(col) #drop token into column 
+      if row == False:
+        print("Whoops! That column is full. Please pick another column.")
+        continue 
+      else:
+        self.detect_win(row, col)
+        if self.game_active:
+          self.detect_draw()
+    # print("Game over. Thanks for playing! Would you like to play again?")
+
+
 
 # ------------------------------- Player Set-Up ------------------------------ #
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
@@ -176,27 +194,7 @@ print(game)
 
 
 
-# #game play
-# while game_status:
-#    #prompt player for input and get valid col #
-#    columnIndex = get_player_input()
-#    #drop the token once column is assigned a valid int and get row #
-#    rowIndex = drop_token(columnIndex)
 
-#    print_board()
-
-#    set_game_status(rowIndex, columnIndex)
-
-#    if not game_status: current_player = player_2 if current_player == player_1 else player_1
-
-
-# # def set_game_status(row, col):
-#   #   if detect_win(row, col):
-  #       print('Way to go!')
-  #       game_status = False
-  #   elif detect_draw():
-  #       print('So sad. No-one wins')  
-  #       game_status = False
 
 #Edge cases to look out for:
   #Response if player inputs a column that is full

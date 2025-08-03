@@ -26,7 +26,7 @@ def get_yes_no(prompt):
 
 def get_name(taken_name=None):
   while True:
-    name = input("What name would you like? ").strip().capitalize() 
+    name = input("Which name would you like? ").strip().capitalize() 
     if name != taken_name:    
       return name
     print(f"That name has already been chosen. Please pick a unique name. ")
@@ -131,7 +131,7 @@ class ConnectFour:
     self.current_player = self.player_2 if self.current_player is self.player_1 else self.player_1
 
   #win detection
-  def detect_win(self, row, col):
+  def detect_win(self, col, row):
     horizontal_row = ''.join(self.board[row])
     vertical_col = ''.join([self.board[rowIndex][col] for rowIndex in range(self.rows)])
     asc_diag = ''.join(self.board[rowIndex][(row + col) - rowIndex] for rowIndex in range(self.rows) if 0 <= (row + col) - rowIndex < self.cols)
@@ -147,45 +147,31 @@ class ConnectFour:
       print(f"{self}\n{'*' * (self.cols * 2 + 2)}\nThere are no losers here. It's a draw! 🤝")
       self.game_active = False
 
-  #customize player/board
-  def customize_name(self, player_num, other_player):
-    name = player_num.name
-    player_name = set_up_player_name(f"Would you like to change {name}? ", name, other_player.name)
-    if player_name == name:
-      print(f"Okay! We'll keep your name as {name}")
-    else:
-      self.player_num.name = player_name
-      print(f"Okay! We've changed your name and it is now {player_name}")  
-
   #game play
   def play(self):
     while self.game_active:
       print(self)
-      col = self.get_player_input() #pick column #
-      row = self.drop_token(col) #drop token into column 
+      col, row = self.get_player_input(), self.drop_token(col)
       if row is False:
         print("Whoops! That column is full. Please pick another column. ")
         continue 
       
-      self.detect_win(row, col)
+      self.detect_win(col, row)
       self.detect_draw()
 
       if self.game_active:
         self.switch_players()
-
-      if not self.game_active:
-        response = get_yes_no("Do you want to play again? ")
-        if response in VALID_YES:
-          customize_response = ("Do you want to change player information or board size? ")
-          if customize_response in VALID_YES:
-            player_response = input("Would you like to change player information? ")
-            if player_response in VALID_YES:
-              self.customize_name(self.player_1, self.player_2)
-              self.customize_name(self.player_2, self.player_1)
-            board_response = input("Would you like to change the board? ")
-            if board_response in VALID_YES:
-              set_up_row_or_col(ROWS)
-              set_up_row_or_col(COLS)
+      else:  
+        if get_yes_no("Do you want to play again? ") in VALID_YES:
+          if get_yes_no("Do you want to change player information/board size? ") in VALID_YES:
+            if get_yes_no("Would you like to change player information? ") in VALID_YES:
+              self.player_1.name = set_name(f"Would you like to change the name of {self.player_1.name}? ", self.player_1.name, self.player_2.name)
+              self.player_1.token = set_token(f"Would you like to change {self.player_1.name}'s token? ", self.player_1.token, self.player_2.token)
+              self.player_2.name = set_name(f"Would you like to change the name of {self.player_2.name}? ", self.player_2.name, self.player_1.name)
+              self.player_2.token = set_token(f"Would you like to change {self.player_2.name}'s token? ", self.player_2.token, self.player_1.token)
+            if get_yes_no("Would you like to customize the board? ") in VALID_YES:
+              self.rows = set_up_row_or_col(ROWS)
+              self.cols = set_up_row_or_col(COLS)
           game_play()    
         else:
           print("Thanks for playing!")

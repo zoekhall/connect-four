@@ -2,8 +2,16 @@
 VALID_YES = ['YES', 'Y', 'TRUE', '1']
 VALID_NO = ['NO', 'N', 'FALSE', '0']
 DEFAULT_TOKENS = ['X', 'O', '@', '#', '*']
-DEFAULT_ROWS = 6
-DEFAULT_COLS = 7
+ROWS = {
+  "default": 6, 
+  "min": 4,
+  "max": 10
+}
+COLS = {
+  "default": 7, 
+  "min": 4,
+  "max": 12
+}
 
 # ----------------------------- Utility Functions ---------------------------- #
 def get_yes_no(prompt):
@@ -60,13 +68,21 @@ def setup_player_token(default_token, other_token=None):
   print(f"Great! You've chosen the token: {token}.")
   return token
 
+def setup_board(type, default, max):
+  response = get_yes_no("Would you like to customize your board?") #ask if want to customize board
+  if response in VALID_YES:
+    row_response = get_yes_no(f"Would you like to change the # of {type}? (default = {default})")
+    if response in VALID_YES:
+      rows = get_number("How many rows would you like? (min = 4, max = 10)")
+  
+
 # ---------------------------------- Classes --------------------------------- #
 class Player: 
   def __init__(self, name, token):
     self.name = name
     self.token = token 
 class ConnectFour:
-  def __init__(self, player_1, player_2, rows=6, cols=7):
+  def __init__(self, player_1, player_2, rows, cols):
     self.rows = rows
     self.cols = cols 
     self.board = [[' ' for _ in range(self.cols)] for _ in range(self.rows)] 
@@ -76,8 +92,8 @@ class ConnectFour:
     self.game_active = True
   
   def __repr__(self):
-    header = f"   {' '.join(str(i + 1) for i in range(self.cols))}"
-    rows = '\n'.join(f"{i}| {' '.join(row)} |" for i, row in enumerate(self.board))
+    header = f"   {' '.join(str(i+1) for i in range(self.cols))}"
+    rows = '\n'.join(f"{i+1}| {' '.join(row)} |" for i, row in enumerate(self.board))
     bottom_border = f"+{'-' * (self.cols * 2 + 2)}+"
     return f"{header}\n{rows}\n{bottom_border}"
 
@@ -89,7 +105,7 @@ class ConnectFour:
         colNum = int(colStr)
         if 1 <= colNum <= self.cols:
           return colNum - 1
-      print(f"{prompts.NUMBER_ERROR} 1-{self.cols}")
+      print(f"Please enter a number between 1-{self.cols}")
 
   #add token to the board
   def drop_token(self, col):
@@ -117,10 +133,10 @@ class ConnectFour:
 # ------------------------------- Player Set-Up ------------------------------ #
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
 
-print("Let's set up the first player")
+print("Let's set up the first player.")
 player_1_name = setup_player_name("Player 1")
 
-print("Now - let's set up the second player")
+print("Now - let's set up the second player.")
 player_2_name = setup_player_name("Player 2", player_1_name)
 
 print(f"Let's choose {player_1_name}'s token")
@@ -133,7 +149,9 @@ player_1 = Player(name=player_1_name, token=player_1_token)
 player_2 = Player(name=player_2_name, token=player_2_token)
 
 # ------------------------------- Board Set-Up ------------------------------- #
-# print("Alright! Let's set up your board")
+print("Alright! Let's set up your board.")
+
+
 # while True: 
 #   customize_board = input(f"Would you like to customize your board? The default is 6 rows/7 columns. {YES_NO_PROMPT}")
 #   if customize_board in VALID_YES:

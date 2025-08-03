@@ -1,6 +1,7 @@
 # ------------------------------- Constants ------------------------------- #
 VALID_YES = ['YES', 'Y', 'TRUE', '1']
 VALID_NO = ['NO', 'N', 'FALSE', '0']
+VALID_YES_NO = VALID_YES + VALID_NO
 DEFAULT_TOKENS = ['X', 'O', '@', '#', '*']
 ROWS = {
   'name': 'rows',
@@ -19,7 +20,7 @@ COLS = {
 def get_yes_no(prompt):
   while True: 
     response = input(prompt).strip().upper()
-    if response in (*VALID_YES, *VALID_NO):
+    if response in (VALID_YES_NO):
       return response
     print("Please enter Yes or No. ")
 
@@ -79,6 +80,12 @@ def setup_player(name, default_token, other_name=None, other_token=None):
   name, token = setup_player_name(name, other_name), setup_player_token(default_token, other_token)
   return Player(name, token)
 
+def set_who_goes_first(player_1, player_2):
+  while True: 
+    response = input(f"Who'd like to go first? {player_1.name} or {player_2.name}?").strip()
+    player_1 if response == player_1.name else player_2
+    print("Please enter a valid player name. ")
+
 # ---------------------------------- Classes --------------------------------- #
 class Player: 
   def __init__(self, name, token):
@@ -132,12 +139,14 @@ class ConnectFour:
     desc_diag = ''.join(self.board[rowIndex][rowIndex - (row - col)] for rowIndex in range(self.rows) if 0 <= rowIndex - (row - col) < self.cols)
     
     if any(win_combo in line for line in [horizontal_row, vertical_col, asc_diag, desc_diag]):
+      print(self)
       print(f"{self.current_player.name} wins! 🎉")
       self.game_active = False
 
   #draw detection
   def detect_draw(self):
     if all(self.board[0][col] != ' ' for col in range(self.cols)):
+      print(self)
       print("There are no losers here. It's a draw! 🤝")
       self.game_active = False
   
@@ -156,7 +165,7 @@ class ConnectFour:
 
       if self.game_active:
         self.switch_players()
-    # print("Game over. Thanks for playing! Would you like to play again?")
+    print("Game over. Thanks for playing! Would you like to play again?")
 
 # ------------------------------- Player Set-Up ------------------------------ #
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")
@@ -177,11 +186,11 @@ else:
 
 print(f"Okay, we'll now create your gameboard with {rows} rows and {cols} columns.")
 game = ConnectFour(player_1, player_2, rows, cols)
-print(game)
 
 # --------------------------------- Game Play -------------------------------- #
 
-
+game.current_player = set_who_goes_first(player_1, player_2)
+game.play()
 
 
 

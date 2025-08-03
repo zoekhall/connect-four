@@ -93,6 +93,7 @@ class ConnectFour:
     self.current_player = self.player_1 
     self.game_active = True
   
+  #print board
   def __repr__(self):
     header = f"   {' '.join(str(i+1) for i in range(self.cols))}"
     rows = '\n'.join(f"{i+1}| {' '.join(row)} |" for i, row in enumerate(self.board))
@@ -111,8 +112,7 @@ class ConnectFour:
 
   #add token to the board
   def drop_token(self, col):
-      #find the lowest empty row in the selected column / start from the 'bottom'
-      for row_index in range(len(self.board) -1, -1, -1):
+      for row_index in range(len(self.board) -1, -1, -1): #find the lowest empty row in the selected column / start from the 'bottom'
         if(self.board[row_index][col] == ' '):
             self.board[row_index][col] = self.current_player.token
             return row_index
@@ -126,12 +126,18 @@ class ConnectFour:
     asc_diag = ''.join(self.board[rowIndex][(row + col) - rowIndex] for rowIndex in range(self.rows) if 0 <= (row + col) - rowIndex < self.cols)
     desc_diag = ''.join(self.board[rowIndex][rowIndex - (row - col)] for rowIndex in range(self.rows) if 0 <= rowIndex - (row - col) < self.cols)
     
-    return any(win_combo in line for line in [horizontal_row, vertical_col, asc_diag, desc_diag])
+    if any(win_combo in line for line in [horizontal_row, vertical_col, asc_diag, desc_diag]):
+      print(f"{self.current_player.name} wins! 🎉")
+      self.game_active = False
 
   #draw detection
   def detect_draw(self):
-    return all(self.board[0][col] != ' ' for col in range(self.cols))
+    if all(self.board[0][col] != ' ' for col in range(self.cols)):
+      print("There are no losers here. It's a draw! 🤝")
   
+  #game play
+  def play(self):
+    while self.game_active:
 
 # ------------------------------- Player Set-Up ------------------------------ #
 print("Welcome to Connect Four! Players will take turns dropping tokens into columns. The first player to connect four tokens in a row (horizontally, vertically, or diagonally) wins!")

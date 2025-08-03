@@ -26,16 +26,16 @@ def get_yes_no(prompt):
 
 def get_name(taken_name=None):
   while True:
-    name = input("What would you like your name to be? ").strip().capitalize() 
+    name = input("What name would you like? ").strip().capitalize() 
     if name != taken_name:    
       return name
     print(f"That name has already been chosen. Please pick a unique name. ")
       
 def get_token(taken_token=None):
   while True:
-    token = input("What would you like your token to be? Please pick a unique character that is not a number. ").upper().strip()
+    token = input("What token would you like? Please pick a character (not a number) as your unique token. ").upper().strip()
     if len(token) != 1 or token.isdigit() or token == taken_token:
-      print("Please enter a single character that is not a number or already used by another player") 
+      print("Please pick a single character that is not a number or already used by another player") 
     else:
       return token 
 
@@ -47,29 +47,27 @@ def get_number(prompt, min_val, max_val):
     print(f"Please pick a valid number between {min_val} and {max_val}. ")
 
 # --------------------------- Game Set_up Functions --------------------------- #  
-def set_up_player_name(prompt, player, other_name=None):
-  player_name = get_name(other_name) if get_yes_no(prompt) in VALID_YES else player
-  return player_name
+def set_up_name(prompt, default_name, other_name=None):
+  name = get_name(other_name) if get_yes_no(prompt) in VALID_YES else default_name
+  print(f"Great! You've chosen: {name}. ")
+  return name
 
-def set_up_player_token(default_token, other_token=None):
-  response = get_yes_no("Would you like to choose your token? ") #ask if want to choose token
+def set_up_token(prompt, default_token, other_token=None):
+  response = get_yes_no(prompt)
   if response in VALID_YES:
     token = get_token(other_token)
   else:
     if default_token is other_token: 
       token = 'O' if default_token == 'X' else 'X'
     else:
-      token = default_token   
+      token = default_token 
+  print(f"Great! You've chosen: {token}. ")      
   return token
 
-def set_up_player(player_num, default_token, other_name=None, other_token=None):
-  print(f"Let's set up {player_num}.")
-
-  name = set_up_player_name("Would you like to choose your name? ", player_num, other_name)
-  print(f"Great! You've chosen the name: {name}. ")
-
-  token = set_up_player_token(default_token, other_token)
-  print(f"Great! You've chosen the token: {token}. ")
+def set_up_player(player, default_token, other_name=None, other_token=None):
+  print(f"Let's set up {player}.")
+  name = set_up_name(f"Would you like to choose your name? If not, you will be known as {player}", player, other_name)
+  token = set_up_token(f"Would you like to choose your token? If not, your token will be {default_token}", default_token, other_token)
   return Player(name, token)
 
 def set_who_goes_first(player_1, player_2):

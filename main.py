@@ -194,26 +194,3 @@ game = ConnectFour(player_1, player_2, rows, cols)
 
 game.current_player = set_who_goes_first(player_1, player_2)
 game.play()
-
-
-
-
-#Edge cases to look out for:
-  #Response if player inputs a column that is full
-  #Response if player inputs an invalid column (not an integer between 1-7)
-
-#Current laginappe:
-  #Add ability for players to choose the board size (default 7x6)
-  #Add ability for player to exit and restart the game at any time
-  #Add ability for players to choose their tokens (X or O)
-  #Add ability for players to choose who goes first
-  #Add ability for players to choose their name
-
-
-  # player_1_token = input(f'{player_1Name}, choose your token (X or O): ').upper()
-# player_2_token = 'O' if player_1_token == 'X' else 'X'
-#establish who is going first/current player - 
-# current_player = input(f'Who goes first? ({player_1Name} or {player_2Name}): ').strip()
-
-# print('Wonderful! Let\'s start the game!')
-#establish tokens

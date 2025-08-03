@@ -7,13 +7,13 @@ ROWS = {
   'name': 'rows',
   'default': 6, 
   'min': 4,
-  'max': 10
+  'max': 8
 }
 COLS = {
   'name': 'columns',
   'default': 7, 
   'min': 4,
-  'max': 12
+  'max': 9
 }
 
 # ----------------------------- Utility Functions ---------------------------- #
@@ -51,13 +51,13 @@ def get_number(prompt, min_val, max_val):
 
 # --------------------------- Game Set_up Functions --------------------------- #  
 def set_name(prompt, default_name, other_name=None):
-  name = get_name(other_name) if yes(prompt) else default_name
+  name = get_name(other_name).capitalize() if yes(prompt) else default_name
   print(f"Great! Your name is: {name}. ")
   return name
 
 def set_token(prompt, default_token, other_token=None):
   if yes(prompt):
-    token = get_token(other_token)
+    token = get_token(other_token).capitalize()
   else:
     token = default_token if default_token != other_token else ('O' if default_token == 'X' else 'X') 
   print(f"Great! Your token is: {token}. ")      
@@ -65,13 +65,13 @@ def set_token(prompt, default_token, other_token=None):
 
 def create_player(player, default_token, other_name=None, other_token=None):
   print(f"Let's set up {player}.")
-  name = set_name(f"Would you like to choose your name? If not, a name will be assigned to you", player, other_name)
-  token = set_token(f"Would you like to choose your token? If not, a token will be assigned to you", default_token, other_token)
+  name = set_name(f"Would you like to choose your name? If not, a name will be assigned to you ", player, other_name)
+  token = set_token(f"Would you like to choose your token? If not, a token will be assigned to you ", default_token, other_token)
   return Player(name, token)
 
 def set_who_goes_first(player_1, player_2):
   while True: 
-    response = input(f"Who'd like to go first? {player_1.name} or {player_2.name}?").strip()
+    response = input(f"Who'd like to go first? {player_1.name} or {player_2.name}? ").strip().capitalize()
     if response == player_1.name:
       return player_1
     elif response == player_2.name:
@@ -86,10 +86,7 @@ def set_up_row_or_col(type):
     return type['default']  
   
 def set_up_board():
-  if yes("Would you like to customize the board? "):
-    rows, cols = set_up_row_or_col(ROWS), set_up_row_or_col(COLS)
-  else: 
-    rows, cols = ROWS['default'], COLS['default']
+  rows, cols = set_up_row_or_col(ROWS), set_up_row_or_col(COLS)
   print(f"Okay, we'll now create your gameboard with {rows} rows and {cols} columns.")
   return (rows, cols)
 
@@ -168,7 +165,8 @@ class ConnectFour:
     try:
       while self.game_active:
         print(self)
-        col, row = self.get_player_input(), self.drop_token(col)
+        col = self.get_player_input() 
+        row = self.drop_token(col)
         if row is False:
           print("Whoops! That column is full. Please pick another column. ")
           continue 

@@ -20,26 +20,22 @@ COLS = {
 def get_yes_no(prompt):
   while True: 
     response = input(prompt).strip().upper()
-    if response in VALID_YES_NO:
+    if input(prompt).strip().upper() in VALID_YES_NO:
       return response
     print("Please enter Yes or No. ")
 
 def get_name(taken_name=None):
   while True:
-    name = input("What would you like your name to be? ").strip() 
+    name = input("What would you like your name to be? ").strip().capitalize() 
     if name != taken_name:    
       return name
     print(f"That name has already been chosen. Please pick a unique name. ")
       
 def get_token(taken_token=None):
   while True:
-    token = input("What would you like your token to be? Please pick one character that is not a number. ").strip()
-    if len(token) != 1:
-      print("Please enter a single character. ")
-    elif token.isdigit(): 
-      print("Please don't use a number. ")
-    elif token ==s taken_token:
-      print("That token is already taken. Try another one. ")     
+    token = input("What would you like your token to be? Please pick a unique character that is not a number. ").upper().strip()
+    if len(token) != 1 or token.isdigit() or token == taken_token:
+      print("Please enter a single character that is not a number or already used by another player") 
     else:
       return token 
 
@@ -166,9 +162,9 @@ class ConnectFour:
       self.game_active = False
 
   #customize player/board
-  def customize_name(self, player_num):
+  def customize_name(self, player_num, other_player):
     name = player_num.name
-    player_name = set_up_player_name(f"Would you like to change {name}? ", name, self.player_2.name)
+    player_name = set_up_player_name(f"Would you like to change {name}? ", name, other_player.name)
     if player_name == name:
       print(f"Okay! We'll keep your name as {name}")
     else:
@@ -198,8 +194,8 @@ class ConnectFour:
           if customize_response in VALID_YES:
             player_response = input("Would you like to change player information? ")
             if player_response in VALID_YES:
-              self.customize_name(self.player_1)
-              self.customize_name(self.player_2)
+              self.customize_name(self.player_1, self.player_2)
+              self.customize_name(self.player_2, self.player_1)
             board_response = input("Would you like to change the board? ")
             if board_response in VALID_YES:
               set_up_row_or_col(ROWS)

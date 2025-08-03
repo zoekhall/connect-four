@@ -3,11 +3,13 @@ VALID_YES = ['YES', 'Y', 'TRUE', '1']
 VALID_NO = ['NO', 'N', 'FALSE', '0']
 DEFAULT_TOKENS = ['X', 'O', '@', '#', '*']
 ROWS = {
+  'name': 'rows',
   'default': 6, 
   'min': 4,
   'max': 10
 }
 COLS = {
+  'name': 'columns',
   'default': 7, 
   'min': 4,
   'max': 12
@@ -69,11 +71,11 @@ def setup_player_token(default_token, other_token=None):
   return token
 
 def setup_row_or_col(type):
-  response = get_yes_no(f"Would you like to change the # of {type.lower()}? (default = {type['default']})")
+  response = get_yes_no(f"Would you like to change the # of {type['name']}? (default = {type['default']})")
   if response in VALID_YES:
-    return get_number(f"How many {type.lower()} would you like? (min = {type['min']}, max = {type['max']})")  
+    return get_number(f"How many {type['name']} would you like? (min = {type['min']}, max = {type['max']})", type['min'], type['max'])  
   else:
-    print(f"Okay! We'll set the # of {type.lower()} to {type['default']}.")
+    print(f"Okay! We'll set the # of {type['name']} to {type['default']}.")
     return type['default']  
 
 # ---------------------------------- Classes --------------------------------- #
@@ -152,16 +154,20 @@ player_2 = Player(name=player_2_name, token=player_2_token)
 print("Alright! Let's set up your board.")
 response = get_yes_no("Would you like to customize your board?") #ask if want to customize board
 if response in VALID_YES:
-  
+  rows = setup_row_or_col(ROWS)
+  cols = setup_row_or_col(COLS)  
+else:
+  rows = ROWS['default']
+  cols = COLS['default']
 
-rows =
-cols = 
+print(f"Okay, we'll now create your gameboard with {rows} rows and {cols} columns.")
 game = ConnectFour(player_1, player_2, rows, cols)
+print(game)
+
+# --------------------------------- Game Play -------------------------------- #
 
 
 
-
-# game = ConnectFour(player_1, player_2)
 
 # #game play
 # while game_status:
